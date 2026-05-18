@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Professional Jersey CRM</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen p-4">
+
+<script>
+
+// LOGIN CHECK
+
+const loggedDealer = JSON.parse(
+
+  localStorage.getItem("loggedDealer")
+
+);
+
+if (!loggedDealer || !loggedDealer.name) {
+
+  alert("Please Login First");
+
+  window.location.href = "index.html";
+
+}
+
+</script>
+
+<div class="max-w-7xl mx-auto">
+
+  <!-- HEADER -->
+
+  <div class="bg-black text-white p-8 rounded-3xl mb-6 shadow-2xl flex justify-between items-center">
+
+    <div>
+
+      <h1 class="text-4xl font-bold">
+
+        TEAM ORDER DETAILS
+
+      </h1>
+
+      <p class="mt-2 text-gray-300">
+
+        Welcome:
+        <span id="dealerName"></span>
+
+      </p>
+
+    </div>
+
+    <button id="logoutBtn"
+            class="bg-red-500 px-5 py-3 rounded-xl font-bold">
+
+      Logout
+
+    </button>
+
+  </div>
+
+  <!-- GRID -->
+
+  <div class="grid md:grid-cols-2 gap-6">
+
+    <!-- FORM -->
+
+    <div class="bg-white p-6 rounded-3xl shadow-xl">
+
+      <form id="jerseyForm" class="space-y-5">
+
+        <!-- TEAM -->
+
+        <div>
+
+          <div class="flex justify-between items-center">
+
+            <label class="font-semibold">
+
+              Team Name
+
+            </label>
+
+            <button type="button"
+                    id="changeTeamBtn"
+                    class="text-blue-500 text-sm hidden">
+
+              Change Team
+
+            </button>
+
+          </div>
+
+          <input type="text"
+                 id="teamName"
+                 required
+                 class="w-full border rounded-xl p-3 mt-2">
+
+        </div>
+
+        <!-- PLAYER -->
+
+        <div>
+
+          <label class="font-semibold">
+
+            Player Name
+
+          </label>
+
+          <input type="text"
+                 id="jerseyName"
+                 required
+                 class="w-full border rounded-xl p-3 mt-2">
+
+        </div>
+
+        <!-- SIZE -->
+
+        <div>
+
+          <label class="font-semibold">
+
+            Player Jersey Size
+
+          </label>
+
+          <select id="jerseySize"
+                  required
+                  class="w-full border rounded-xl p-3 mt-2">
+
+            <option value="">
+              -- Select Jersey Size --
+            </option>
+
+            <option>20</option>
+            <option>22</option>
+            <option>24</option>
+            <option>26</option>
+            <option>28</option>
+            <option>30</option>
+            <option>32</option>
+            <option>34</option>
+            <option>36</option>
+            <option>38</option>
+            <option>40</option>
+            <option>42</option>
+            <option>44</option>
+            <option>46</option>
+            <option>48</option>
+            <option>50</option>
+            <option>52</option>
+            <option>54</option>
+            <option>56</option>
+            <option>58</option>
+            <option>60</option>
+
+          </select>
+
+        </div>
+
+        <!-- TYPE -->
+
+        <div>
+
+          <label class="font-semibold">
+
+            Jersey Type
+
+          </label>
+
+          <select id="jerseyType"
+                  required
+                  class="w-full border rounded-xl p-3 mt-2">
+
+            <option value="">
+              -- Select Jersey Type --
+            </option>
+
+            <option>Half Sleeve</option>
+            <option>Full Sleeve</option>
+            <option>Sleeveless</option>
+
+          </select>
+
+        </div>
+
+        <!-- NUMBER -->
+
+        <div>
+
+          <label class="font-semibold">
+
+            Jersey Number
+
+          </label>
+
+          <input type="text"
+                 id="jerseyNumber"
+                 required
+                 class="w-full border rounded-xl p-3 mt-2">
+
+        </div>
+
+        <!-- NOTES -->
+
+        <div>
+
+          <label class="font-semibold">
+
+            Notes
+
+          </label>
+
+          <textarea id="notes"
+                    rows="4"
+                    class="w-full border rounded-xl p-3 mt-2"></textarea>
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="w-full bg-black text-white py-4 rounded-2xl font-bold text-lg">
+
+          Add Player
+
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- PREVIEW -->
+
+    <div class="bg-white p-6 rounded-3xl shadow-xl">
+
+      <div class="flex justify-between items-center mb-5">
+
+        <h2 class="text-2xl font-bold">
+
+          Team Players
+
+        </h2>
+
+        <button id="downloadPDF"
+                class="bg-red-500 text-white px-5 py-2 rounded-xl hidden">
+
+          Download PDF
+
+        </button>
+
+      </div>
+
+      <div id="orderPreview">
+
+        <p>No Players Added Yet</p>
+
+      </div>
+
+      <div class="flex gap-3 mt-6">
+
+        <button id="saveTeamBtn"
+                class="bg-green-500 text-white px-5 py-3 rounded-xl hidden">
+
+          Save Team
+
+        </button>
+
+        <button id="clearTeamBtn"
+                class="bg-gray-700 text-white px-5 py-3 rounded-xl hidden">
+
+          Clear Team
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+// DEALER NAME
+
+document.getElementById("dealerName")
+
+.innerText = loggedDealer.name;
+
+
+// LOGOUT
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+
+  logoutBtn.addEventListener("click", function() {
+
+    localStorage.removeItem("loggedDealer");
+
+    window.location.href = "index.html";
+
+  });
+
+}
+
+
+// GOOGLE SHEET URL
+
+const scriptURL = "https://script.google.com/macros/s/AKfycbzsK4HlGf-1SmHjaVs_N8Sx6yJgRQ4f69HLD5al_Q0-MKLY6BY_qx3beqTwET5P94DP5g/exec";
+
+
+// ELEMENTS
+
+const form = document.getElementById("jerseyForm");
+
+const preview = document.getElementById("orderPreview");
+
+const saveTeamBtn = document.getElementById("saveTeamBtn");
+
+const clearTeamBtn = document.getElementById("clearTeamBtn");
+
+const downloadPDFBtn = document.getElementById("downloadPDF");
+
+const teamNameInput = document.getElementById("teamName");
+
+const changeTeamBtn = document.getElementById("changeTeamBtn");
+
+
+// STORAGE
+
+const storageKey = "teamOrders_" + loggedDealer.mobile;
+
+let orders = JSON.parse(
+
+  localStorage.getItem(storageKey)
+
+) || [];
+
+
+// LOAD SAVED TEAM
+
+if (orders.length > 0) {
+
+  renderTable();
+
+  teamNameInput.value = orders[0].teamName;
+
+  teamNameInput.readOnly = true;
+
+  teamNameInput.classList.add("bg-gray-100");
+
+  changeTeamBtn.classList.remove("hidden");
+
+}
+
+
+// FORM SUBMIT
+
+form.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  if (teamNameInput.value.trim() !== "") {
+
+    teamNameInput.readOnly = true;
+
+    teamNameInput.classList.add("bg-gray-100");
+
+    changeTeamBtn.classList.remove("hidden");
+
+  }
+
+  const order = {
+
+    dealerName: loggedDealer.name,
+
+    dealerMobile: loggedDealer.mobile,
+
+    teamName: document.getElementById("teamName").value,
+
+    jerseyName: document.getElementById("jerseyName").value,
+
+    jerseySize: document.getElementById("jerseySize").value,
+
+    jerseyType: document.getElementById("jerseyType").value,
+
+    jerseyNumber: document.getElementById("jerseyNumber").value,
+
+    notes: document.getElementById("notes").value
+
+  };
+
+  orders.push(order);
+
+  renderTable();
+
+  // RESET
+
+  document.getElementById("jerseyName").value = "";
+
+  document.getElementById("jerseySize").value = "";
+
+  document.getElementById("jerseyType").value = "";
+
+  document.getElementById("jerseyNumber").value = "";
+
+  document.getElementById("notes").value = "";
+
+});
+
+
+// RENDER TABLE
+
+function renderTable() {
+
+  if (orders.length === 0) {
+
+    preview.innerHTML = "<p>No Players Added Yet</p>";
+
+    return;
+
+  }
+
+  let html = `
+
+  <table class="w-full border-collapse border">
+
+    <thead>
+
+      <tr class="bg-black text-white">
+
+        <th class="border p-2">SR</th>
+
+        <th class="border p-2">Player</th>
+
+        <th class="border p-2">Size</th>
+
+        <th class="border p-2">Type</th>
+
+        <th class="border p-2">Jersey Number</th>
+
+        <th class="border p-2">Actions</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+  `;
+
+  orders.forEach((order, index) => {
+
+    html += `
+
+      <tr>
+
+        <td class="border p-2">${index + 1}</td>
+
+        <td class="border p-2">${order.jerseyName}</td>
+
+        <td class="border p-2">${order.jerseySize}</td>
+
+        <td class="border p-2">${order.jerseyType}</td>
+
+        <td class="border p-2">${order.jerseyNumber}</td>
+
+        <td class="border p-2 flex gap-2">
+
+          <button onclick="editOrder(${index})"
+                  class="bg-blue-500 text-white px-3 py-1 rounded">
+
+            Edit
+
+          </button>
+
+          <button onclick="deleteOrder(${index})"
+                  class="bg-red-500 text-white px-3 py-1 rounded">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+  html += `</tbody></table>`;
+
+  preview.innerHTML = html;
+
+  saveTeamBtn.classList.remove("hidden");
+
+  clearTeamBtn.classList.remove("hidden");
+
+  downloadPDFBtn.classList.remove("hidden");
+
+}
+
+
+// EDIT
+
+function editOrder(index) {
+
+  const order = orders[index];
+
+  document.getElementById("jerseyName").value = order.jerseyName;
+
+  document.getElementById("jerseySize").value = order.jerseySize;
+
+  document.getElementById("jerseyType").value = order.jerseyType;
+
+  document.getElementById("jerseyNumber").value = order.jerseyNumber;
+
+  document.getElementById("notes").value = order.notes;
+
+  orders.splice(index, 1);
+
+  renderTable();
+
+}
+
+
+// DELETE
+
+function deleteOrder(index) {
+
+  orders.splice(index, 1);
+
+  renderTable();
+
+}
+
+
+// SAVE TEAM
+
+saveTeamBtn.addEventListener("click", async function() {
+
+  localStorage.setItem(
+
+    storageKey,
+
+    JSON.stringify(orders)
+
+  );
+
+  try {
+
+    await fetch(scriptURL, {
+
+      method: "POST",
+
+      body: JSON.stringify({
+
+        dealerName: loggedDealer.name,
+
+        dealerMobile: loggedDealer.mobile,
+
+        teamName: orders[0].teamName,
+
+        players: orders
+
+      })
+
+    });
+
+    alert("Team Saved Successfully!");
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    alert("Error Saving Team");
+
+  }
+
+});
+
+
+// CLEAR TEAM
+
+clearTeamBtn.addEventListener("click", function() {
+
+  if(confirm("Clear Team?")) {
+
+    orders = [];
+
+    localStorage.removeItem(storageKey);
+
+    renderTable();
+
+    teamNameInput.value = "";
+
+    teamNameInput.readOnly = false;
+
+    teamNameInput.classList.remove("bg-gray-100");
+
+    changeTeamBtn.classList.add("hidden");
+
+  }
+
+});
+
+
+// CHANGE TEAM
+
+changeTeamBtn.addEventListener("click", function() {
+
+  if(confirm("Change Team Name?")) {
+
+    teamNameInput.readOnly = false;
+
+    teamNameInput.classList.remove("bg-gray-100");
+
+  }
+
+});
+
+
+// PDF
+
+downloadPDFBtn.addEventListener("click", function() {
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF();
+
+  const now = new Date();
+
+  const currentDate = now.toLocaleDateString();
+
+  const currentTime = now.toLocaleTimeString();
+
+  doc.setFontSize(24);
+
+  doc.text("TEAM ORDER DETAILS", 20, 20);
+
+  doc.setFontSize(11);
+
+  doc.text(`Date: ${currentDate}`, 20, 35);
+
+  doc.text(`Time: ${currentTime}`, 80, 35);
+
+  doc.setFontSize(12);
+
+  doc.text(`Dealer Name: ${loggedDealer.name}`, 20, 50);
+
+  doc.text(`Mobile Number: ${loggedDealer.mobile}`, 20, 60);
+
+  doc.text(`Team Name: ${orders[0]?.teamName || ""}`, 20, 70);
+
+  let startY = 90;
+
+  doc.setFillColor(0,0,0);
+
+  doc.setTextColor(255,255,255);
+
+  doc.rect(20, startY, 170, 10, "F");
+
+  doc.text("SR", 25, startY + 7);
+
+  doc.text("PLAYER", 40, startY + 7);
+
+  doc.text("SIZE", 90, startY + 7);
+
+  doc.text("TYPE", 115, startY + 7);
+
+  doc.text("NUMBER", 145, startY + 7);
+
+  doc.setTextColor(0,0,0);
+
+  let y = startY + 10;
+
+  orders.forEach((order, index) => {
+
+    doc.rect(20, y, 170, 10);
+
+    doc.text(String(index + 1), 25, y + 7);
+
+    doc.text(order.jerseyName, 40, y + 7);
+
+    doc.text(order.jerseySize, 90, y + 7);
+
+    doc.text(order.jerseyType, 115, y + 7);
+
+    doc.text(order.jerseyNumber, 150, y + 7);
+
+    y += 10;
+
+  });
+
+  y += 20;
+
+  doc.setFontSize(11);
+
+  doc.text("Generated by Sports Jersey Design", 20, y);
+
+  doc.save("team-order-details.pdf");
+
+});
+
+</script>
+
+</body>
+</html>

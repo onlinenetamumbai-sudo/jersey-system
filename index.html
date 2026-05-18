@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Dealer Login</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+<div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md">
+
+  <h1 class="text-4xl font-bold text-center mb-8">
+
+    Dealer Login
+
+  </h1>
+
+  <form id="loginForm" class="space-y-5">
+
+    <div>
+
+      <label class="font-semibold">
+
+        Mobile Number
+
+      </label>
+
+      <input type="text"
+             id="mobile"
+             required
+             class="w-full border rounded-xl p-3 mt-2">
+
+    </div>
+
+    <div>
+
+      <label class="font-semibold">
+
+        Password
+
+      </label>
+
+      <input type="password"
+             id="password"
+             required
+             class="w-full border rounded-xl p-3 mt-2">
+
+    </div>
+
+    <button type="submit"
+            class="w-full bg-black text-white py-4 rounded-2xl font-bold text-lg">
+
+      Login
+
+    </button>
+
+  </form>
+
+  <p id="error"
+     class="text-red-500 text-center mt-5 hidden">
+
+    Invalid Mobile Number or Password
+
+  </p>
+
+</div>
+
+<script>
+
+let dealers = [];
+
+
+// GOOGLE SHEET API URL
+
+const apiURL = "https://script.google.com/macros/s/AKfycbwfS2tCGgHYkY-MNRCBsxkVYXWe9N00Y76vWQDwDN0MlyBnCuIEdP2WofnxbRPkbYU8/exec";
+
+
+// LOAD DEALERS
+
+async function loadDealers() {
+
+  try {
+
+    const response = await fetch(apiURL);
+
+    dealers = await response.json();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+  }
+
+}
+
+loadDealers();
+
+
+// LOGIN
+
+document.getElementById("loginForm")
+
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const mobile = document.getElementById("mobile").value;
+
+  const password = document.getElementById("password").value;
+
+  const dealer = dealers.find(user =>
+
+    user.mobile === mobile &&
+    user.password === password
+
+  );
+
+  if (dealer) {
+
+    localStorage.setItem(
+
+      "loggedDealer",
+
+      JSON.stringify(dealer)
+
+    );
+
+    window.location.href = "dashboard.html";
+
+  }
+
+  else {
+
+    document.getElementById("error")
+
+    .classList.remove("hidden");
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
