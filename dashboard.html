@@ -20,7 +20,9 @@
 
 <script>
 
+  // ==========================================
   // LOGIN CHECK
+  // ==========================================
 
   const loggedDealer =
     JSON.parse(localStorage.getItem("loggedDealer"));
@@ -81,9 +83,21 @@
 
       </label>
 
-      <input type="text"
-             id="teamName"
-             class="w-full border rounded-2xl p-4 mt-2 text-lg">
+      <div class="flex gap-3 mt-2">
+
+        <input type="text"
+               id="teamName"
+               placeholder="Enter Team Name"
+               class="w-full border rounded-2xl p-4 text-lg">
+
+        <button id="createTeamBtn"
+                class="bg-black text-white px-8 rounded-2xl font-bold whitespace-nowrap">
+
+          Create Team
+
+        </button>
+
+      </div>
 
     </div>
 
@@ -236,7 +250,7 @@
 
     </div>
 
-    <!-- ADD BUTTON -->
+    <!-- ADD PLAYER -->
 
     <button id="addPlayerBtn"
             class="w-full bg-black text-white p-5 rounded-2xl text-xl font-bold">
@@ -360,10 +374,6 @@
 
   let orders = [];
 
-  // ==========================================
-  // TABLE BODY
-  // ==========================================
-
   const previewTable =
     document.getElementById("previewTable");
 
@@ -419,6 +429,82 @@
   }
 
   loadTeams();
+
+  // ==========================================
+  // CREATE TEAM
+  // ==========================================
+
+  document.getElementById("createTeamBtn")
+
+  .addEventListener("click", function () {
+
+    const teamName =
+      document.getElementById("teamName").value.trim();
+
+    if (!teamName) {
+
+      alert("Please Enter Team Name");
+
+      return;
+
+    }
+
+    const teamSelect =
+      document.getElementById("teamSelect");
+
+    let exists = false;
+
+    for (let i = 0; i < teamSelect.options.length; i++) {
+
+      if (
+
+        teamSelect.options[i].value
+        === teamName
+
+      ) {
+
+        exists = true;
+
+        break;
+
+      }
+
+    }
+
+    if (exists) {
+
+      alert("Team Already Exists");
+
+      return;
+
+    }
+
+    teamSelect.innerHTML += `
+
+      <option value="${teamName}">
+        ${teamName}
+      </option>
+
+    `;
+
+    teamSelect.value = teamName;
+
+    alert("Team Created Successfully");
+
+  });
+
+  // ==========================================
+  // SELECT TEAM
+  // ==========================================
+
+  document.getElementById("teamSelect")
+
+  .addEventListener("change", function () {
+
+    document.getElementById("teamName")
+      .value = this.value;
+
+  });
 
   // ==========================================
   // ADD PLAYER
@@ -477,8 +563,6 @@
     });
 
     renderTable();
-
-    // CLEAR PLAYER FIELDS
 
     document.getElementById("playerName").value = "";
 
@@ -645,11 +729,7 @@
 
   .addEventListener("click", function () {
 
-    alert(
-
-      "Existing Team Updated"
-
-    );
+    alert("Existing Team Updated");
 
   });
 
@@ -666,6 +746,8 @@
     renderTable();
 
     document.getElementById("teamName").value = "";
+
+    document.getElementById("teamSelect").value = "";
 
     document.getElementById("playerName").value = "";
 
