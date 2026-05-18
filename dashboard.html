@@ -3,12 +3,12 @@
 
 <head>
 
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0" />
 
-  <title>TEAM ORDER DETAILS</title>
+  <title>Team Order Dashboard</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -16,262 +16,256 @@
 
 </head>
 
-<body class="bg-gray-100 min-h-screen p-4">
+<body class="bg-gray-200 p-6">
 
 <script>
 
-// LOGIN CHECK
+  // LOGIN CHECK
 
-const loggedDealer = JSON.parse(
+  const loggedDealer =
+    JSON.parse(localStorage.getItem("loggedDealer"));
 
-  localStorage.getItem("loggedDealer")
+  if (!loggedDealer) {
 
-);
+    window.location.href = "index.html";
 
-if (!loggedDealer) {
-
-  window.location.href = "index.html";
-
-}
+  }
 
 </script>
 
-<div class="max-w-7xl mx-auto">
+<!-- HEADER -->
 
-  <!-- HEADER -->
+<div class="bg-black text-white rounded-3xl p-8 flex justify-between items-center mb-6">
 
-  <div class="bg-black text-white p-8 rounded-3xl mb-6 flex justify-between items-center">
+  <div>
 
-    <div>
+    <h1 class="text-5xl font-bold">
 
-      <h1 class="text-4xl font-bold">
+      TEAM ORDER DETAILS
 
-        TEAM ORDER DETAILS
+    </h1>
 
-      </h1>
+    <p class="mt-3 text-xl">
 
-      <p class="mt-2">
+      Welcome:
+      <span id="dealerName"></span>
 
-        Welcome:
-        <span id="dealerName"></span>
+    </p>
 
-      </p>
+  </div>
+
+  <button id="logoutBtn"
+          class="bg-red-500 px-8 py-4 rounded-2xl text-xl font-bold">
+
+    Logout
+
+  </button>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <!-- FORM -->
+
+  <div class="bg-white rounded-3xl p-8 shadow-lg">
+
+    <div class="mb-5">
+
+      <label class="font-bold text-xl">
+
+        Team Name
+
+      </label>
+
+      <input type="text"
+             id="teamName"
+             class="w-full border rounded-2xl p-4 mt-2 text-lg" />
 
     </div>
 
-    <button id="logoutBtn"
-            class="bg-red-500 px-6 py-3 rounded-2xl font-bold">
+    <div class="mb-5">
 
-      Logout
+      <label class="font-bold text-xl">
+
+        Player Name
+
+      </label>
+
+      <input type="text"
+             id="playerName"
+             class="w-full border rounded-2xl p-4 mt-2 text-lg" />
+
+    </div>
+
+    <div class="mb-5">
+
+      <label class="font-bold text-xl">
+
+        Jersey Size
+
+      </label>
+
+      <select id="jerseySize"
+              class="w-full border rounded-2xl p-4 mt-2 text-lg">
+
+        <option value="">
+
+          Select Size
+
+        </option>
+
+        <option>20</option>
+        <option>22</option>
+        <option>24</option>
+        <option>26</option>
+        <option>28</option>
+        <option>30</option>
+        <option>32</option>
+        <option>34</option>
+        <option>36</option>
+        <option>38</option>
+        <option>40</option>
+        <option>42</option>
+        <option>44</option>
+        <option>46</option>
+        <option>48</option>
+        <option>50</option>
+        <option>52</option>
+
+      </select>
+
+    </div>
+
+    <div class="mb-5">
+
+      <label class="font-bold text-xl">
+
+        Jersey Type
+
+      </label>
+
+      <select id="jerseyType"
+              class="w-full border rounded-2xl p-4 mt-2 text-lg">
+
+        <option value="">
+
+          Select Type
+
+        </option>
+
+        <option>Half Sleeve</option>
+        <option>Full Sleeve</option>
+        <option>Sleeveless</option>
+
+      </select>
+
+    </div>
+
+    <div class="mb-5">
+
+      <label class="font-bold text-xl">
+
+        Jersey Number
+
+      </label>
+
+      <input type="text"
+             id="jerseyNumber"
+             class="w-full border rounded-2xl p-4 mt-2 text-lg" />
+
+    </div>
+
+    <div class="mb-5">
+
+      <label class="font-bold text-xl">
+
+        Notes
+
+      </label>
+
+      <textarea id="notes"
+                rows="5"
+                class="w-full border rounded-2xl p-4 mt-2 text-lg"></textarea>
+
+    </div>
+
+    <button id="addPlayerBtn"
+            class="w-full bg-black text-white p-5 rounded-2xl text-xl font-bold">
+
+      Add Player
 
     </button>
 
   </div>
 
-  <!-- MAIN GRID -->
+  <!-- PREVIEW -->
 
-  <div class="grid md:grid-cols-2 gap-6">
+  <div class="bg-white rounded-3xl p-8 shadow-lg">
 
-    <!-- LEFT FORM -->
+    <div class="flex justify-between items-center mb-6">
 
-    <div class="bg-white p-6 rounded-3xl shadow-xl">
+      <h2 class="text-4xl font-bold">
 
-      <form id="jerseyForm" class="space-y-5">
+        Team Players
 
-        <!-- TEAM NAME -->
+      </h2>
 
-        <div>
+      <button id="pdfBtn"
+              class="bg-red-500 text-white px-6 py-3 rounded-2xl text-xl">
 
-          <label class="font-semibold">
+        PDF
 
-            Team Name
-
-          </label>
-
-          <input type="text"
-                 id="teamName"
-                 required
-                 class="w-full border rounded-xl p-3 mt-2">
-
-        </div>
-
-        <!-- PLAYER NAME -->
-
-        <div>
-
-          <label class="font-semibold">
-
-            Player Name
-
-          </label>
-
-          <input type="text"
-                 id="jerseyName"
-                 required
-                 class="w-full border rounded-xl p-3 mt-2">
-
-        </div>
-
-        <!-- SIZE -->
-
-        <div>
-
-          <label class="font-semibold">
-
-            Jersey Size
-
-          </label>
-
-          <select id="jerseySize"
-                  required
-                  class="w-full border rounded-xl p-3 mt-2">
-
-            <option value="">
-              Select Size
-            </option>
-
-            <option>20</option>
-            <option>22</option>
-            <option>24</option>
-            <option>26</option>
-            <option>28</option>
-            <option>30</option>
-            <option>32</option>
-            <option>34</option>
-            <option>36</option>
-            <option>38</option>
-            <option>40</option>
-            <option>42</option>
-            <option>44</option>
-            <option>46</option>
-            <option>48</option>
-            <option>50</option>
-            <option>52</option>
-            <option>54</option>
-            <option>56</option>
-            <option>58</option>
-            <option>60</option>
-
-          </select>
-
-        </div>
-
-        <!-- TYPE -->
-
-        <div>
-
-          <label class="font-semibold">
-
-            Jersey Type
-
-          </label>
-
-          <select id="jerseyType"
-                  required
-                  class="w-full border rounded-xl p-3 mt-2">
-
-            <option value="">
-              Select Type
-            </option>
-
-            <option>Half Sleeve</option>
-            <option>Full Sleeve</option>
-            <option>Sleeveless</option>
-
-          </select>
-
-        </div>
-
-        <!-- NUMBER -->
-
-        <div>
-
-          <label class="font-semibold">
-
-            Jersey Number
-
-          </label>
-
-          <input type="text"
-                 id="jerseyNumber"
-                 required
-                 class="w-full border rounded-xl p-3 mt-2">
-
-        </div>
-
-        <!-- NOTES -->
-
-        <div>
-
-          <label class="font-semibold">
-
-            Notes
-
-          </label>
-
-          <textarea id="notes"
-                    rows="4"
-                    class="w-full border rounded-xl p-3 mt-2"></textarea>
-
-        </div>
-
-        <!-- BUTTON -->
-
-        <button type="submit"
-                class="w-full bg-black text-white py-4 rounded-2xl font-bold">
-
-          Add Player
-
-        </button>
-
-      </form>
+      </button>
 
     </div>
 
-    <!-- RIGHT PREVIEW -->
+    <div class="overflow-auto">
 
-    <div class="bg-white p-6 rounded-3xl shadow-xl">
+      <table class="w-full border">
 
-      <div class="flex justify-between items-center mb-5">
+        <thead>
 
-        <h2 class="text-2xl font-bold">
+          <tr class="bg-black text-white">
 
-          Team Players
+            <th class="p-3 border">SR</th>
 
-        </h2>
+            <th class="p-3 border">PLAYER</th>
 
-        <button id="downloadPDF"
-                class="bg-red-500 text-white px-5 py-2 rounded-xl hidden">
+            <th class="p-3 border">SIZE</th>
 
-          PDF
+            <th class="p-3 border">TYPE</th>
 
-        </button>
+            <th class="p-3 border">NUMBER</th>
 
-      </div>
+            <th class="p-3 border">ACTION</th>
 
-      <div id="preview">
+          </tr>
 
-        No Players Added
+        </thead>
 
-      </div>
+        <tbody id="previewTable"></tbody>
 
-      <div class="flex gap-3 mt-5">
+      </table>
 
-        <button id="saveBtn"
-                class="bg-green-500 text-white px-5 py-3 rounded-xl hidden">
+    </div>
 
-          Save Team
+    <div class="mt-6 flex gap-4">
 
-        </button>
+      <button id="saveBtn"
+              class="bg-green-500 text-white px-6 py-4 rounded-2xl text-xl font-bold">
 
-        <button id="clearBtn"
-                class="bg-gray-700 text-white px-5 py-3 rounded-xl hidden">
+        Save Team
 
-          Clear
+      </button>
 
-        </button>
+      <button id="clearBtn"
+              class="bg-gray-700 text-white px-6 py-4 rounded-2xl text-xl font-bold">
 
-      </div>
+        Clear
+
+      </button>
 
     </div>
 
@@ -281,426 +275,436 @@ if (!loggedDealer) {
 
 <script>
 
-// DEALER NAME
+  // GOOGLE SCRIPT URL
 
-document.getElementById("dealerName")
+  const scriptURL =
+    "https://script.google.com/macros/s/AKfycbzoOLyybFoSR-BonHEH_7FxSKkyPwMGqle1Qzlx771iZ6Fxnc4DdKp4yrGoOcJVGalH0g/exec";
 
-.innerText = loggedDealer.name;
+  // DEALER NAME
 
+  document.getElementById("dealerName")
+    .innerText = loggedDealer.name;
 
-// LOGOUT
+  // ORDERS ARRAY
 
-document.getElementById("logoutBtn")
+  let orders = [];
 
-.addEventListener("click", function() {
+  // PREVIEW TABLE
 
-  localStorage.removeItem("loggedDealer");
+  const previewTable =
+    document.getElementById("previewTable");
 
-  window.location.href = "index.html";
+  // ADD PLAYER
 
-});
+  document.getElementById("addPlayerBtn")
 
+    .addEventListener("click", function () {
 
-// GOOGLE SCRIPT URL
+      const teamName =
+        document.getElementById("teamName").value;
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbzoOLyybFoSR-BonHEH_7FxSKkyPwMGqle1Qzlx771iZ6Fxnc4DdKp4yrGoOcJVGalH0g/exec";
+      const playerName =
+        document.getElementById("playerName").value;
 
+      const jerseySize =
+        document.getElementById("jerseySize").value;
 
-// STORAGE
+      const jerseyType =
+        document.getElementById("jerseyType").value;
 
-let orders = [];
+      const jerseyNumber =
+        document.getElementById("jerseyNumber").value;
 
+      const notes =
+        document.getElementById("notes").value;
 
-// ELEMENTS
+      // VALIDATION
 
-const form = document.getElementById("jerseyForm");
+      if (
 
-const preview = document.getElementById("preview");
+        !teamName ||
+        !playerName ||
+        !jerseySize ||
+        !jerseyType ||
+        !jerseyNumber
 
-const saveBtn = document.getElementById("saveBtn");
+      ) {
 
-const clearBtn = document.getElementById("clearBtn");
+        alert("Please Fill All Fields");
 
-const pdfBtn = document.getElementById("downloadPDF");
+        return;
 
-const teamNameInput =
+      }
 
-document.getElementById("teamName");
+      // PUSH DATA
 
+      orders.push({
 
-// ADD PLAYER
+        jerseyName: playerName,
 
-form.addEventListener("submit", function(e) {
+        jerseySize,
 
-  e.preventDefault();
+        jerseyType,
 
-  // VALIDATION
+        jerseyNumber,
 
-  if (
+        notes
 
-    !teamNameInput.value ||
+      });
 
-    !document.getElementById("jerseyName").value ||
+      renderTable();
 
-    !document.getElementById("jerseySize").value ||
+      // RESET PLAYER FIELDS ONLY
 
-    !document.getElementById("jerseyType").value ||
+      document.getElementById("playerName").value = "";
 
-    !document.getElementById("jerseyNumber").value
+      document.getElementById("jerseySize").value = "";
 
-  ) {
+      document.getElementById("jerseyType").value = "";
 
-    alert("Please Fill All Fields");
+      document.getElementById("jerseyNumber").value = "";
 
-    return;
-
-  }
-
-  const order = {
-
-    teamName:
-
-      teamNameInput.value,
-
-    jerseyName:
-
-      document.getElementById("jerseyName").value,
-
-    jerseySize:
-
-      document.getElementById("jerseySize").value,
-
-    jerseyType:
-
-      document.getElementById("jerseyType").value,
-
-    jerseyNumber:
-
-      document.getElementById("jerseyNumber").value,
-
-    notes:
-
-      document.getElementById("notes").value
-
-  };
-
-  orders.push(order);
-
-  renderTable();
-
-  // RESET ONLY PLAYER FIELDS
-
-  document.getElementById("jerseyName").value = "";
-
-  document.getElementById("jerseySize").value = "";
-
-  document.getElementById("jerseyType").value = "";
-
-  document.getElementById("jerseyNumber").value = "";
-
-  document.getElementById("notes").value = "";
-
-});
-
-
-// TABLE
-
-function renderTable() {
-
-  let html = `
-
-  <table class="w-full border">
-
-    <thead>
-
-      <tr class="bg-black text-white">
-
-        <th class="border p-2">SR</th>
-
-        <th class="border p-2">PLAYER</th>
-
-        <th class="border p-2">SIZE</th>
-
-        <th class="border p-2">TYPE</th>
-
-        <th class="border p-2">NUMBER</th>
-
-      </tr>
-
-    </thead>
-
-    <tbody>
-
-  `;
-
-  orders.forEach((order, index) => {
-
-    html += `
-
-    <tr>
-
-      <td class="border p-2">
-
-        ${index + 1}
-
-      </td>
-
-      <td class="border p-2">
-
-        ${order.jerseyName}
-
-      </td>
-
-      <td class="border p-2">
-
-        ${order.jerseySize}
-
-      </td>
-
-      <td class="border p-2">
-
-        ${order.jerseyType}
-
-      </td>
-
-      <td class="border p-2">
-
-        ${order.jerseyNumber}
-
-      </td>
-
-    </tr>
-
-    `;
-
-  });
-
-  html += `</tbody></table>`;
-
-  preview.innerHTML = html;
-
-  saveBtn.classList.remove("hidden");
-
-  clearBtn.classList.remove("hidden");
-
-  pdfBtn.classList.remove("hidden");
-
-}
-
-
-// SAVE TEAM
-
-saveBtn.addEventListener("click", async function () {
-
-  if (orders.length === 0) {
-
-    alert("No Players Added");
-
-    return;
-
-  }
-
-  const finalData = {
-
-    dealerName: loggedDealer.name,
-
-    dealerMobile: loggedDealer.mobile,
-
-    teamName:
-
-      document.getElementById("teamName").value,
-
-    players: orders.map((player) => ({
-
-      jerseyName: player.jerseyName,
-
-      jerseySize: player.jerseySize,
-
-      jerseyType: player.jerseyType,
-
-      jerseyNumber: player.jerseyNumber,
-
-      notes: player.notes || ""
-
-    }))
-
-  };
-
-  console.log(finalData);
-
-  try {
-
-    const response = await fetch(scriptURL, {
-
-      method: "POST",
-
-      headers: {
-
-        "Content-Type": "application/json"
-
-      },
-
-      body: JSON.stringify(finalData)
+      document.getElementById("notes").value = "";
 
     });
 
-    const result = await response.text();
+  // RENDER TABLE
 
-    console.log(result);
+  function renderTable() {
 
-    alert("Team Saved Successfully");
+    previewTable.innerHTML = "";
+
+    orders.forEach((player, index) => {
+
+      previewTable.innerHTML += `
+
+        <tr>
+
+          <td class="border p-3">
+
+            ${index + 1}
+
+          </td>
+
+          <td class="border p-3">
+
+            ${player.jerseyName}
+
+          </td>
+
+          <td class="border p-3">
+
+            ${player.jerseySize}
+
+          </td>
+
+          <td class="border p-3">
+
+            ${player.jerseyType}
+
+          </td>
+
+          <td class="border p-3">
+
+            ${player.jerseyNumber}
+
+          </td>
+
+          <td class="border p-3">
+
+            <button
+              onclick="deletePlayer(${index})"
+              class="bg-red-500 text-white px-4 py-2 rounded-xl">
+
+              Delete
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    });
 
   }
 
-  catch (error) {
+  // DELETE PLAYER
 
-    console.error(error);
+  function deletePlayer(index) {
 
-    alert("Save Failed");
+    orders.splice(index, 1);
+
+    renderTable();
 
   }
 
-});
+  // SAVE TEAM
 
+  document.getElementById("saveBtn")
 
-// CLEAR
+    .addEventListener("click", async function () {
 
-clearBtn.addEventListener("click", function() {
+      if (orders.length === 0) {
 
-  orders = [];
+        alert("No Players Added");
 
-  preview.innerHTML = "No Players Added";
+        return;
 
-  saveBtn.classList.add("hidden");
+      }
 
-  clearBtn.classList.add("hidden");
+      const finalData = {
 
-  pdfBtn.classList.add("hidden");
+        dealerName: loggedDealer.name,
 
-  teamNameInput.value = "";
+        dealerMobile: loggedDealer.mobile,
 
-});
+        teamName:
+          document.getElementById("teamName").value,
 
+        players: orders
 
-// PDF
+      };
 
-pdfBtn.addEventListener("click", function() {
+      try {
 
-  const { jsPDF } = window.jspdf;
+        const response = await fetch(scriptURL, {
 
-  const doc = new jsPDF();
+          method: "POST",
 
-  const now = new Date();
+          body: JSON.stringify(finalData),
 
-  doc.setFontSize(22);
+          headers: {
 
-  doc.text("TEAM ORDER DETAILS", 20, 20);
+            "Content-Type":
+              "application/json"
 
-  doc.setFontSize(12);
+          }
 
-  doc.text(
+        });
 
-    "Dealer: " + loggedDealer.name,
+        const result =
+          await response.json();
 
-    20,
+        if (result.status === "success") {
 
-    35
+          alert("Team Saved Successfully");
 
-  );
+        }
 
-  doc.text(
+        else {
 
-    "Mobile: " + loggedDealer.mobile,
+          alert("Save Failed");
 
-    20,
+        }
 
-    45
+      }
 
-  );
+      catch (error) {
 
-  doc.text(
+        console.log(error);
 
-    "Team: " +
+        alert("Save Failed");
 
-    document.getElementById("teamName").value,
+      }
 
-    20,
+    });
 
-    55
+  // CLEAR
 
-  );
+  document.getElementById("clearBtn")
 
-  doc.text(
+    .addEventListener("click", function () {
 
-    "Generated: " +
+      orders = [];
 
-    now.toLocaleDateString() +
+      renderTable();
 
-    " " +
+      document.getElementById("teamName").value = "";
 
-    now.toLocaleTimeString(),
+    });
 
-    20,
+  // LOGOUT
 
-    65
+  document.getElementById("logoutBtn")
 
-  );
+    .addEventListener("click", function () {
 
-  // HEADER
+      localStorage.removeItem("loggedDealer");
 
-  let y = 85;
+      window.location.href = "index.html";
 
-  doc.rect(20, y, 170, 10);
+    });
 
-  doc.text("SR", 25, y + 7);
+  // PDF
 
-  doc.text("PLAYER", 45, y + 7);
+  document.getElementById("pdfBtn")
 
-  doc.text("SIZE", 90, y + 7);
+    .addEventListener("click", function () {
 
-  doc.text("TYPE", 120, y + 7);
+      const { jsPDF } = window.jspdf;
 
-  doc.text("NUMBER", 160, y + 7);
+      const doc = new jsPDF();
 
-  y += 10;
+      const teamName =
+        document.getElementById("teamName").value;
 
-  // PLAYERS
+      const date =
+        new Date().toLocaleString();
 
-  orders.forEach((order, index) => {
+      doc.setFontSize(22);
 
-    doc.rect(20, y, 170, 10);
+      doc.text("TEAM ORDER DETAILS", 20, 20);
 
-    doc.text(String(index + 1), 25, y + 7);
+      doc.setFontSize(12);
 
-    doc.text(order.jerseyName, 45, y + 7);
+      doc.text(
 
-    doc.text(order.jerseySize, 90, y + 7);
+        "Generated by Sports Jersey Design",
 
-    doc.text(order.jerseyType, 120, y + 7);
+        20,
 
-    doc.text(order.jerseyNumber, 160, y + 7);
+        30
 
-    y += 10;
+      );
 
-  });
+      doc.text(
 
-  y += 20;
+        "Date & Time: " + date,
 
-  doc.text(
+        20,
 
-    "Generated by Sports Jersey Design",
+        40
 
-    20,
+      );
 
-    y
+      doc.text(
 
-  );
+        "Team Name: " + teamName,
 
-  doc.save("team-order-details.pdf");
+        20,
 
-});
+        50
+
+      );
+
+      let y = 70;
+
+      doc.text(
+
+        "SR",
+
+        20,
+
+        y
+
+      );
+
+      doc.text(
+
+        "PLAYER",
+
+        40,
+
+        y
+
+      );
+
+      doc.text(
+
+        "SIZE",
+
+        90,
+
+        y
+
+      );
+
+      doc.text(
+
+        "TYPE",
+
+        120,
+
+        y
+
+      );
+
+      doc.text(
+
+        "NUMBER",
+
+        170,
+
+        y
+
+      );
+
+      y += 10;
+
+      orders.forEach((player, index) => {
+
+        doc.text(
+
+          String(index + 1),
+
+          20,
+
+          y
+
+        );
+
+        doc.text(
+
+          player.jerseyName,
+
+          40,
+
+          y
+
+        );
+
+        doc.text(
+
+          player.jerseySize,
+
+          90,
+
+          y
+
+        );
+
+        doc.text(
+
+          player.jerseyType,
+
+          120,
+
+          y
+
+        );
+
+        doc.text(
+
+          player.jerseyNumber,
+
+          170,
+
+          y
+
+        );
+
+        y += 10;
+
+      });
+
+      doc.save("team-order.pdf");
+
+    });
 
 </script>
 
 </body>
+
 </html>
