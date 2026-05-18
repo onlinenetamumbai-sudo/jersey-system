@@ -369,10 +369,18 @@
     loggedDealer.name;
 
   // ==========================================
-  // PLAYERS ARRAY
+  // TEAM DATABASE MEMORY
   // ==========================================
 
+  let teamsData = {};
+
   let orders = [];
+
+  let currentTeam = "";
+
+  // ==========================================
+  // TABLE BODY
+  // ==========================================
 
   const previewTable =
     document.getElementById("previewTable");
@@ -416,6 +424,12 @@
 
         `;
 
+        if (!teamsData[team]) {
+
+          teamsData[team] = [];
+
+        }
+
       });
 
     }
@@ -431,6 +445,56 @@
   loadTeams();
 
   // ==========================================
+  // LOAD TEAM DATA
+  // ==========================================
+
+  async function loadTeamData(teamName) {
+
+    try {
+
+      const response =
+        await fetch(
+
+          scriptURL +
+          "?dealerName=" +
+          dealerName +
+          "&teamName=" +
+          encodeURIComponent(teamName)
+
+        );
+
+      const data =
+        await response.json();
+
+      orders = [];
+
+      if (
+
+        data &&
+        data.players
+
+      ) {
+
+        orders = data.players;
+
+      }
+
+      teamsData[teamName] =
+        [...orders];
+
+      renderTable();
+
+    }
+
+    catch(error) {
+
+      console.log(error);
+
+    }
+
+  }
+
+  // ==========================================
   // CREATE TEAM
   // ==========================================
 
@@ -439,7 +503,9 @@
   .addEventListener("click", function () {
 
     const teamName =
-      document.getElementById("teamName").value.trim();
+      document.getElementById("teamName")
+      .value
+      .trim();
 
     if (!teamName) {
 
@@ -454,7 +520,15 @@
 
     let exists = false;
 
-    for (let i = 0; i < teamSelect.options.length; i++) {
+    for (
+
+      let i = 0;
+
+      i < teamSelect.options.length;
+
+      i++
+
+    ) {
 
       if (
 
@@ -479,6 +553,13 @@
 
     }
 
+    if (currentTeam) {
+
+      teamsData[currentTeam] =
+        [...orders];
+
+    }
+
     teamSelect.innerHTML += `
 
       <option value="${teamName}">
@@ -487,22 +568,68 @@
 
     `;
 
+    teamsData[teamName] = [];
+
+    currentTeam = teamName;
+
     teamSelect.value = teamName;
+
+    orders = [];
+
+    renderTable();
 
     alert("Team Created Successfully");
 
   });
 
   // ==========================================
-  // SELECT TEAM
+  // TEAM SWITCH SYSTEM
   // ==========================================
 
   document.getElementById("teamSelect")
 
-  .addEventListener("change", function () {
+  .addEventListener("change", async function () {
+
+    const selectedTeam =
+      this.value;
+
+    if (!selectedTeam) {
+
+      return;
+
+    }
+
+    if (currentTeam) {
+
+      teamsData[currentTeam] =
+        [...orders];
+
+    }
+
+    currentTeam = selectedTeam;
 
     document.getElementById("teamName")
-      .value = this.value;
+      .value = selectedTeam;
+
+    if (
+
+      teamsData[selectedTeam] &&
+      teamsData[selectedTeam].length > 0
+
+    ) {
+
+      orders =
+        teamsData[selectedTeam];
+
+      renderTable();
+
+    }
+
+    else {
+
+      await loadTeamData(selectedTeam);
+
+    }
 
   });
 
@@ -561,6 +688,9 @@
       notes
 
     });
+
+    teamsData[currentTeam] =
+      [...orders];
 
     renderTable();
 
@@ -650,6 +780,9 @@
   function deletePlayer(index) {
 
     orders.splice(index, 1);
+
+    teamsData[currentTeam] =
+      [...orders];
 
     renderTable();
 
@@ -772,80 +905,6 @@
     localStorage.removeItem("loggedDealer");
 
     window.location.href = "index.html";
-
-  });
-
-  // ==========================================
-  // PDF
-  // ==========================================
-
-  document.getElementById("pdfBtn")
-
-  .addEventListener("click", function () {
-
-    const { jsPDF } = window.jspdf;
-
-    const doc = new jsPDF();
-
-    const teamName =
-      document.getElementById("teamName").value;
-
-    doc.setFontSize(22);
-
-    doc.text(
-
-      "TEAM ORDER DETAILS",
-
-      20,
-
-      20
-
-    );
-
-    doc.setFontSize(12);
-
-    doc.text(
-
-      "Team Name: " + teamName,
-
-      20,
-
-      40
-
-    );
-
-    doc.text(
-
-      "Total Qty: " + orders.length,
-
-      20,
-
-      50
-
-    );
-
-    let y = 70;
-
-    orders.forEach((player, index) => {
-
-      doc.text(
-
-        `${index + 1}. ${player.jerseyName}
-         | ${player.jerseySize}
-         | ${player.jerseyType}
-         | ${player.jerseyNumber}`,
-
-        20,
-
-        y
-
-      );
-
-      y += 10;
-
-    });
-
-    doc.save("team-order.pdf");
 
   });
 
