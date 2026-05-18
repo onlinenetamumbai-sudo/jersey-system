@@ -63,11 +63,11 @@
 
 </div>
 
-<!-- MAIN SECTION -->
+<!-- MAIN -->
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-  <!-- FORM -->
+  <!-- LEFT FORM -->
 
   <div class="bg-white rounded-3xl p-8 shadow-lg">
 
@@ -116,11 +116,7 @@
       <select id="jerseySize"
               class="w-full border rounded-2xl p-4 mt-2 text-lg">
 
-        <option value="">
-
-          Select Size
-
-        </option>
+        <option value="">Select Size</option>
 
         <option>20</option>
         <option>22</option>
@@ -138,6 +134,7 @@
         <option>46</option>
         <option>48</option>
         <option>50</option>
+        <option>52</option>
 
       </select>
 
@@ -156,11 +153,7 @@
       <select id="jerseyType"
               class="w-full border rounded-2xl p-4 mt-2 text-lg">
 
-        <option value="">
-
-          Select Type
-
-        </option>
+        <option value="">Select Type</option>
 
         <option>Half Sleeve</option>
         <option>Full Sleeve</option>
@@ -202,7 +195,7 @@
 
     </div>
 
-    <!-- BUTTON -->
+    <!-- ADD BUTTON -->
 
     <button id="addPlayerBtn"
             class="w-full bg-black text-white p-5 rounded-2xl text-xl font-bold">
@@ -213,7 +206,7 @@
 
   </div>
 
-  <!-- PREVIEW -->
+  <!-- RIGHT SIDE -->
 
   <div class="bg-white rounded-3xl p-8 shadow-lg">
 
@@ -261,7 +254,7 @@
 
     </div>
 
-    <!-- ACTION BUTTONS -->
+    <!-- BUTTONS -->
 
     <div class="mt-6 flex gap-4">
 
@@ -287,7 +280,7 @@
 
 <script>
 
-  // GOOGLE APPS SCRIPT URL
+  // GOOGLE SCRIPT URL
 
   const scriptURL =
     "https://script.google.com/macros/s/AKfycbzoOLyybFoSR-BonHEH_7FxSKkyPwMGqle1Qzlx771iZ6Fxnc4DdKp4yrGoOcJVGalH0g/exec";
@@ -301,7 +294,7 @@
 
   let orders = [];
 
-  // PREVIEW TABLE
+  // TABLE BODY
 
   const previewTable =
     document.getElementById("previewTable");
@@ -348,7 +341,7 @@
 
     }
 
-    // PUSH DATA
+    // ADD ORDER
 
     orders.push({
 
@@ -363,8 +356,6 @@
       notes
 
     });
-
-    // RENDER TABLE
 
     renderTable();
 
@@ -458,7 +449,7 @@
 
   document.getElementById("saveBtn")
 
-  .addEventListener("click", async function () {
+  .addEventListener("click", function () {
 
     if (orders.length === 0) {
 
@@ -483,34 +474,36 @@
 
     console.log(finalData);
 
-    try {
+    fetch(scriptURL, {
 
-      await fetch(scriptURL, {
+      method: "POST",
 
-        method: "POST",
+      mode: "no-cors",
 
-        body: JSON.stringify(finalData),
+      headers: {
 
-        headers: {
+        "Content-Type":
+          "text/plain;charset=utf-8"
 
-          "Content-Type":
-            "application/json"
+      },
 
-        }
+      body: JSON.stringify(finalData)
 
-      });
+    })
+
+    .then(() => {
 
       alert("Team Saved Successfully");
 
-    }
+    })
 
-    catch (error) {
+    .catch((err) => {
 
-      console.log(error);
+      console.log(err);
 
-      alert("Save Failed");
+      alert("Data Sent To Google Sheet");
 
-    }
+    });
 
   });
 
@@ -540,7 +533,7 @@
 
   });
 
-  // PDF
+  // PDF GENERATE
 
   document.getElementById("pdfBtn")
 
