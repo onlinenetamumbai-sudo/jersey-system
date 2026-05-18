@@ -16,7 +16,26 @@
 
 </head>
 
-<body class="bg-gray-200 p-4 md:p-8">
+<body class="bg-gray-200 p-3 md:p-5">
+
+<!-- TOAST -->
+
+<div id="toast"
+
+style="
+position:fixed;
+top:20px;
+right:20px;
+background:black;
+color:white;
+padding:15px 25px;
+border-radius:12px;
+font-weight:bold;
+display:none;
+z-index:9999;
+">
+
+</div>
 
 <script>
 
@@ -29,7 +48,8 @@
 
   if (!loggedDealer) {
 
-    window.location.href = "index.html";
+    window.location.href =
+      "index.html";
 
   }
 
@@ -37,7 +57,7 @@
 
 <!-- HEADER -->
 
-<div class="bg-black text-white rounded-3xl p-6 md:p-8 flex justify-between items-center mb-6">
+<div class="bg-black text-white rounded-3xl p-6 flex justify-between items-center mb-5">
 
   <div>
 
@@ -57,7 +77,7 @@
   </div>
 
   <button id="logoutBtn"
-          class="bg-red-500 px-6 py-4 rounded-2xl text-lg font-bold">
+          class="bg-red-500 px-6 py-4 rounded-2xl font-bold">
 
     Logout
 
@@ -67,11 +87,11 @@
 
 <!-- MAIN -->
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
   <!-- LEFT -->
 
-  <div class="bg-white rounded-3xl p-6 shadow-lg">
+  <div class="bg-white rounded-3xl p-5 shadow-lg">
 
     <!-- CREATE TEAM -->
 
@@ -83,12 +103,12 @@
 
       </label>
 
-      <div class="flex gap-3 mt-2">
+      <div class="flex gap-3 mt-3">
 
         <input type="text"
                id="teamName"
                placeholder="Enter Team Name"
-               class="w-full border rounded-2xl p-4 text-lg">
+               class="w-full border rounded-2xl p-4">
 
         <button id="createTeamBtn"
                 class="bg-black text-white px-8 rounded-2xl font-bold whitespace-nowrap">
@@ -101,7 +121,7 @@
 
     </div>
 
-    <!-- SELECT TEAM -->
+    <!-- TEAM SELECT -->
 
     <div class="mb-5">
 
@@ -112,19 +132,17 @@
       </label>
 
       <select id="teamSelect"
-              class="w-full border rounded-2xl p-4 mt-2 text-lg">
+              class="w-full border rounded-2xl p-4 mt-3">
 
         <option value="">
-
           Select Team
-
         </option>
 
       </select>
 
     </div>
 
-    <!-- PLAYER NAME -->
+    <!-- PLAYER -->
 
     <div class="mb-5">
 
@@ -136,7 +154,7 @@
 
       <input type="text"
              id="playerName"
-             class="w-full border rounded-2xl p-4 mt-2 text-lg">
+             class="w-full border rounded-2xl p-4 mt-3">
 
     </div>
 
@@ -151,7 +169,7 @@
       </label>
 
       <select id="jerseySize"
-              class="w-full border rounded-2xl p-4 mt-2 text-lg">
+              class="w-full border rounded-2xl p-4 mt-3">
 
         <option value="">Select Size</option>
 
@@ -170,8 +188,6 @@
         <option>44</option>
         <option>46</option>
         <option>48</option>
-        <option>50</option>
-        <option>52</option>
 
       </select>
 
@@ -188,7 +204,7 @@
       </label>
 
       <select id="jerseyType"
-              class="w-full border rounded-2xl p-4 mt-2 text-lg">
+              class="w-full border rounded-2xl p-4 mt-3">
 
         <option value="">Select Type</option>
 
@@ -212,7 +228,7 @@
 
       <input type="text"
              id="jerseyNumber"
-             class="w-full border rounded-2xl p-4 mt-2 text-lg">
+             class="w-full border rounded-2xl p-4 mt-3">
 
     </div>
 
@@ -228,7 +244,7 @@
 
       <textarea id="notes"
                 rows="5"
-                class="w-full border rounded-2xl p-4 mt-2 text-lg"></textarea>
+                class="w-full border rounded-2xl p-4 mt-3"></textarea>
 
     </div>
 
@@ -236,13 +252,13 @@
 
     <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-xl mb-5">
 
-      <p class="font-bold text-yellow-900">
+      <p class="font-bold">
 
         IMPORTANT NOTE
 
       </p>
 
-      <p class="text-yellow-800">
+      <p>
 
         Please clear the fields when you enter data for a new team.
 
@@ -263,9 +279,9 @@
 
   <!-- RIGHT -->
 
-  <div class="bg-white rounded-3xl p-6 shadow-lg">
+  <div class="bg-white rounded-3xl p-5 shadow-lg">
 
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-5">
 
       <h2 class="text-3xl font-bold">
 
@@ -274,7 +290,7 @@
       </h2>
 
       <button id="pdfBtn"
-              class="bg-red-500 text-white px-6 py-3 rounded-2xl text-xl">
+              class="bg-red-500 text-white px-6 py-3 rounded-2xl">
 
         PDF
 
@@ -320,24 +336,24 @@
 
     <!-- BUTTONS -->
 
-    <div class="mt-6 flex gap-4 flex-wrap">
+    <div class="mt-5 flex gap-3 flex-wrap">
 
       <button id="saveBtn"
-              class="bg-green-500 text-white px-6 py-4 rounded-2xl text-xl font-bold">
+              class="bg-green-500 text-white px-6 py-4 rounded-2xl font-bold">
 
         Save Team
 
       </button>
 
       <button id="updateBtn"
-              class="bg-blue-500 text-white px-6 py-4 rounded-2xl text-xl font-bold">
+              class="bg-blue-500 text-white px-6 py-4 rounded-2xl font-bold">
 
         Update Team
 
       </button>
 
       <button id="clearBtn"
-              class="bg-gray-700 text-white px-6 py-4 rounded-2xl text-xl font-bold">
+              class="bg-gray-700 text-white px-6 py-4 rounded-2xl font-bold">
 
         Clear
 
@@ -352,38 +368,52 @@
 <script>
 
   // ==========================================
-  // GOOGLE SCRIPT URL
+  // SCRIPT URL
   // ==========================================
 
   const scriptURL =
     "https://script.google.com/macros/s/AKfycbzoOLyybFoSR-BonHEH_7FxSKkyPwMGqle1Qzlx771iZ6Fxnc4DdKp4yrGoOcJVGalH0g/exec";
 
   // ==========================================
-  // DEALER NAME
+  // DEALER
   // ==========================================
 
   document.getElementById("dealerName")
     .innerText = loggedDealer.name;
 
-  const dealerName =
-    loggedDealer.name;
-
   // ==========================================
-  // TEAM DATABASE MEMORY
+  // VARIABLES
   // ==========================================
-
-  let teamsData = {};
 
   let orders = [];
 
   let currentTeam = "";
 
-  // ==========================================
-  // TABLE BODY
-  // ==========================================
+  let teamsData = {};
 
   const previewTable =
     document.getElementById("previewTable");
+
+  // ==========================================
+  // TOAST
+  // ==========================================
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.style.display = "block";
+
+    setTimeout(() => {
+
+      toast.style.display = "none";
+
+    }, 2500);
+
+  }
 
   // ==========================================
   // LOAD TEAMS
@@ -398,17 +428,17 @@
 
           scriptURL +
           "?dealerName=" +
-          dealerName
+          loggedDealer.name
 
         );
 
       const teams =
         await response.json();
 
-      const teamSelect =
+      const select =
         document.getElementById("teamSelect");
 
-      teamSelect.innerHTML =
+      select.innerHTML =
 
         `<option value="">
           Select Team
@@ -416,19 +446,13 @@
 
       teams.forEach(team => {
 
-        teamSelect.innerHTML += `
+        select.innerHTML += `
 
           <option value="${team}">
             ${team}
           </option>
 
         `;
-
-        if (!teamsData[team]) {
-
-          teamsData[team] = [];
-
-        }
 
       });
 
@@ -442,55 +466,13 @@
 
   }
 
-  loadTeams();
-
   // ==========================================
-  // LOAD TEAM DATA
+  // PAGE LOAD
   // ==========================================
 
-  async function loadTeamData(teamName) {
+  window.onload = function () {
 
-    try {
-
-      const response =
-        await fetch(
-
-          scriptURL +
-          "?dealerName=" +
-          dealerName +
-          "&teamName=" +
-          encodeURIComponent(teamName)
-
-        );
-
-      const data =
-        await response.json();
-
-      orders = [];
-
-      if (
-
-        data &&
-        data.players
-
-      ) {
-
-        orders = data.players;
-
-      }
-
-      teamsData[teamName] =
-        [...orders];
-
-      renderTable();
-
-    }
-
-    catch(error) {
-
-      console.log(error);
-
-    }
+    loadTeams();
 
   }
 
@@ -504,134 +486,81 @@
 
     const teamName =
       document.getElementById("teamName")
-      .value
-      .trim();
+      .value.trim();
 
     if (!teamName) {
 
-      alert("Please Enter Team Name");
+      showToast("Enter Team Name");
 
       return;
 
     }
-
-    const teamSelect =
-      document.getElementById("teamSelect");
-
-    let exists = false;
-
-    for (
-
-      let i = 0;
-
-      i < teamSelect.options.length;
-
-      i++
-
-    ) {
-
-      if (
-
-        teamSelect.options[i].value
-        === teamName
-
-      ) {
-
-        exists = true;
-
-        break;
-
-      }
-
-    }
-
-    if (exists) {
-
-      alert("Team Already Exists");
-
-      return;
-
-    }
-
-    if (currentTeam) {
-
-      teamsData[currentTeam] =
-        [...orders];
-
-    }
-
-    teamSelect.innerHTML += `
-
-      <option value="${teamName}">
-        ${teamName}
-      </option>
-
-    `;
-
-    teamsData[teamName] = [];
 
     currentTeam = teamName;
-
-    teamSelect.value = teamName;
 
     orders = [];
 
     renderTable();
 
-    alert("Team Created Successfully");
+    showToast("Team Created Successfully");
 
   });
 
   // ==========================================
-  // TEAM SWITCH SYSTEM
+  // SELECT TEAM
   // ==========================================
 
   document.getElementById("teamSelect")
 
-  .addEventListener("change", async function () {
+  .addEventListener("change",
 
-    const selectedTeam =
-      this.value;
+    async function () {
 
-    if (!selectedTeam) {
+      const teamName =
+        this.value;
 
-      return;
+      currentTeam = teamName;
+
+      document.getElementById("teamName")
+        .value = teamName;
+
+      try {
+
+        const response =
+          await fetch(
+
+            scriptURL +
+            "?dealerName=" +
+
+            loggedDealer.name +
+
+            "&teamName=" +
+
+            encodeURIComponent(teamName)
+
+          );
+
+        const data =
+          await response.json();
+
+        orders =
+          data.players || [];
+
+        renderTable();
+
+        showToast("Team Loaded");
+
+      }
+
+      catch(error) {
+
+        console.log(error);
+
+      }
 
     }
 
-    if (currentTeam) {
-
-      teamsData[currentTeam] =
-        [...orders];
-
-    }
-
-    currentTeam = selectedTeam;
-
-    document.getElementById("teamName")
-      .value = selectedTeam;
-
-    if (
-
-      teamsData[selectedTeam] &&
-      teamsData[selectedTeam].length > 0
-
-    ) {
-
-      orders =
-        teamsData[selectedTeam];
-
-      renderTable();
-
-    }
-
-    else {
-
-      await loadTeamData(selectedTeam);
-
-    }
-
-  });
+  );
 
   // ==========================================
   // ADD PLAYER
@@ -640,9 +569,6 @@
   document.getElementById("addPlayerBtn")
 
   .addEventListener("click", function () {
-
-    const teamName =
-      document.getElementById("teamName").value;
 
     const playerName =
       document.getElementById("playerName").value;
@@ -661,7 +587,7 @@
 
     if (
 
-      !teamName ||
+      !currentTeam ||
       !playerName ||
       !jerseySize ||
       !jerseyType ||
@@ -669,7 +595,7 @@
 
     ) {
 
-      alert("Please Fill All Fields");
+      showToast("Fill All Fields");
 
       return;
 
@@ -689,9 +615,6 @@
 
     });
 
-    teamsData[currentTeam] =
-      [...orders];
-
     renderTable();
 
     document.getElementById("playerName").value = "";
@@ -703,6 +626,8 @@
     document.getElementById("jerseyNumber").value = "";
 
     document.getElementById("notes").value = "";
+
+    showToast("Player Added");
 
   });
 
@@ -721,51 +646,63 @@
 
       previewTable.innerHTML += `
 
-        <tr>
+      <tr>
 
-          <td class="border p-3 text-center">
+        <td class="border p-3 text-center">
 
-            ${index + 1}
+          ${index + 1}
 
-          </td>
+        </td>
 
-          <td class="border p-3">
+        <td class="border p-3">
 
-            ${player.jerseyName}
+          ${player.jerseyName}
 
-          </td>
+        </td>
 
-          <td class="border p-3 text-center">
+        <td class="border p-3 text-center">
 
-            ${player.jerseySize}
+          ${player.jerseySize}
 
-          </td>
+        </td>
 
-          <td class="border p-3 text-center">
+        <td class="border p-3 text-center">
 
-            ${player.jerseyType}
+          ${player.jerseyType}
 
-          </td>
+        </td>
 
-          <td class="border p-3 text-center">
+        <td class="border p-3 text-center">
 
-            ${player.jerseyNumber}
+          ${player.jerseyNumber}
 
-          </td>
+        </td>
 
-          <td class="border p-3 text-center">
+        <td class="border p-3 text-center">
+
+          <div class="flex gap-2 justify-center">
+
+            <button
+              onclick="editPlayer(${index})"
+              class="bg-blue-500 text-white px-3 py-2 rounded-xl">
+
+              Edit
+
+            </button>
 
             <button
               onclick="deletePlayer(${index})"
-              class="bg-red-500 text-white px-4 py-2 rounded-xl">
+              class="bg-red-500 text-white px-3 py-2 rounded-xl">
 
               Delete
 
             </button>
 
-          </td>
+          </div>
 
-        </tr>
+        </td>
+
+      </tr>
 
       `;
 
@@ -774,17 +711,47 @@
   }
 
   // ==========================================
-  // DELETE PLAYER
+  // EDIT PLAYER
+  // ==========================================
+
+  function editPlayer(index) {
+
+    const player = orders[index];
+
+    document.getElementById("playerName").value =
+      player.jerseyName;
+
+    document.getElementById("jerseySize").value =
+      player.jerseySize;
+
+    document.getElementById("jerseyType").value =
+      player.jerseyType;
+
+    document.getElementById("jerseyNumber").value =
+      player.jerseyNumber;
+
+    document.getElementById("notes").value =
+      player.notes;
+
+    orders.splice(index, 1);
+
+    renderTable();
+
+    showToast("Player Loaded For Edit");
+
+  }
+
+  // ==========================================
+  // DELETE
   // ==========================================
 
   function deletePlayer(index) {
 
     orders.splice(index, 1);
 
-    teamsData[currentTeam] =
-      [...orders];
-
     renderTable();
+
+    showToast("Player Deleted");
 
   }
 
@@ -794,11 +761,16 @@
 
   document.getElementById("saveBtn")
 
-  .addEventListener("click", function () {
+  .addEventListener("click", async function () {
 
-    if (orders.length === 0) {
+    if (
 
-      alert("No Players Added");
+      !currentTeam ||
+      orders.length === 0
+
+    ) {
+
+      showToast("No Players Found");
 
       return;
 
@@ -806,51 +778,52 @@
 
     const finalData = {
 
-      dealerName: loggedDealer.name,
+      dealerName:
+        loggedDealer.name,
 
-      dealerMobile: loggedDealer.mobile,
+      dealerMobile:
+        loggedDealer.mobile,
 
       teamName:
-        document.getElementById("teamName").value,
-
-      totalQty: orders.length,
+        currentTeam,
 
       players: orders
 
     };
 
-    fetch(scriptURL, {
+    try {
 
-      method: "POST",
+      await fetch(scriptURL, {
 
-      mode: "no-cors",
+        method: "POST",
 
-      headers: {
+        mode: "no-cors",
 
-        "Content-Type":
-          "text/plain;charset=utf-8"
+        headers: {
 
-      },
+          "Content-Type":
+            "text/plain;charset=utf-8"
 
-      body: JSON.stringify(finalData)
+        },
 
-    })
+        body:
+          JSON.stringify(finalData)
 
-    .then(() => {
+      });
 
-      alert("Team Saved Successfully");
+      showToast("Team Saved Successfully");
 
       loadTeams();
 
-    })
+    }
 
-    .catch((err) => {
+    catch(error) {
 
-      console.log(err);
+      console.log(error);
 
-      alert("Save Failed");
+      showToast("Save Failed");
 
-    });
+    }
 
   });
 
@@ -860,9 +833,182 @@
 
   document.getElementById("updateBtn")
 
+  .addEventListener("click", async function () {
+
+    if (
+
+      !currentTeam ||
+      orders.length === 0
+
+    ) {
+
+      showToast("No Team Found");
+
+      return;
+
+    }
+
+    const finalData = {
+
+      dealerName:
+        loggedDealer.name,
+
+      dealerMobile:
+        loggedDealer.mobile,
+
+      teamName:
+        currentTeam,
+
+      players: orders
+
+    };
+
+    try {
+
+      await fetch(scriptURL, {
+
+        method: "POST",
+
+        mode: "no-cors",
+
+        headers: {
+
+          "Content-Type":
+            "text/plain;charset=utf-8"
+
+        },
+
+        body:
+          JSON.stringify(finalData)
+
+      });
+
+      showToast("Team Updated");
+
+      loadTeams();
+
+    }
+
+    catch(error) {
+
+      console.log(error);
+
+      showToast("Update Failed");
+
+    }
+
+  });
+
+  // ==========================================
+  // PDF DOWNLOAD
+  // ==========================================
+
+  document.getElementById("pdfBtn")
+
   .addEventListener("click", function () {
 
-    alert("Existing Team Updated");
+    if (orders.length === 0) {
+
+      showToast("No Players Found");
+
+      return;
+
+    }
+
+    const { jsPDF } =
+      window.jspdf;
+
+    const doc =
+      new jsPDF();
+
+    doc.setFontSize(20);
+
+    doc.text(
+
+      "TEAM ORDER DETAILS",
+
+      60,
+      20
+
+    );
+
+    doc.setFontSize(12);
+
+    doc.text(
+
+      "TEAM NAME : " +
+      currentTeam,
+
+      20,
+      40
+
+    );
+
+    doc.text(
+
+      "DEALER : " +
+      loggedDealer.name,
+
+      20,
+      50
+
+    );
+
+    let y = 70;
+
+    doc.text("SR", 20, y);
+
+    doc.text("PLAYER", 40, y);
+
+    doc.text("SIZE", 90, y);
+
+    doc.text("TYPE", 120, y);
+
+    doc.text("NUMBER", 170, y);
+
+    y += 10;
+
+    orders.forEach((p, i) => {
+
+      doc.text(
+        String(i + 1),
+        20,
+        y
+      );
+
+      doc.text(
+        p.jerseyName,
+        40,
+        y
+      );
+
+      doc.text(
+        p.jerseySize,
+        90,
+        y
+      );
+
+      doc.text(
+        p.jerseyType,
+        120,
+        y
+      );
+
+      doc.text(
+        p.jerseyNumber,
+        170,
+        y
+      );
+
+      y += 10;
+
+    });
+
+    doc.save(
+
+      currentTeam + ".pdf"
+
+    );
 
   });
 
@@ -892,6 +1038,10 @@
 
     document.getElementById("notes").value = "";
 
+    currentTeam = "";
+
+    showToast("Fields Cleared");
+
   });
 
   // ==========================================
@@ -904,7 +1054,8 @@
 
     localStorage.removeItem("loggedDealer");
 
-    window.location.href = "index.html";
+    window.location.href =
+      "index.html";
 
   });
 
