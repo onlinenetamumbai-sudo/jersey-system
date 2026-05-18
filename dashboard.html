@@ -490,39 +490,73 @@ function renderTable() {
 
 // SAVE TEAM
 
-saveBtn.addEventListener("click", async function() {
+saveBtn.addEventListener("click", async function () {
+
+  if (orders.length === 0) {
+
+    alert("No Players Added");
+
+    return;
+
+  }
+
+  const finalData = {
+
+    dealerName: loggedDealer.name,
+
+    dealerMobile: loggedDealer.mobile,
+
+    teamName:
+
+      document.getElementById("teamName").value,
+
+    players: orders.map((player) => ({
+
+      jerseyName: player.jerseyName,
+
+      jerseySize: player.jerseySize,
+
+      jerseyType: player.jerseyType,
+
+      jerseyNumber: player.jerseyNumber,
+
+      notes: player.notes || ""
+
+    }))
+
+  };
+
+  console.log(finalData);
 
   try {
 
-    await fetch(scriptURL, {
+    const response = await fetch(scriptURL, {
 
       method: "POST",
 
-      body: JSON.stringify({
+      headers: {
 
-        dealerName: loggedDealer.name,
+        "Content-Type": "application/json"
 
-        dealerMobile: loggedDealer.mobile,
+      },
 
-        teamName:
-
-          document.getElementById("teamName").value,
-
-        players: orders
-
-      })
+      body: JSON.stringify(finalData)
 
     });
+
+    const result = await response.text();
+
+    console.log(result);
 
     alert("Team Saved Successfully");
 
   }
 
-  catch(error) {
+  catch (error) {
 
     console.error(error);
 
-    alert("Error Saving Team");
+    alert("Save Failed");
 
   }
 
