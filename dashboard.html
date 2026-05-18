@@ -8,7 +8,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <title>Professional Jersey CRM</title>
+  <title>Jersey CRM</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -20,17 +20,13 @@
 
 <script>
 
-// LOGIN CHECK
-
 const loggedDealer = JSON.parse(
 
   localStorage.getItem("loggedDealer")
 
 );
 
-if (!loggedDealer || !loggedDealer.name) {
-
-  alert("Please Login First");
+if (!loggedDealer) {
 
   window.location.href = "index.html";
 
@@ -42,7 +38,7 @@ if (!loggedDealer || !loggedDealer.name) {
 
   <!-- HEADER -->
 
-  <div class="bg-black text-white p-8 rounded-3xl mb-6 shadow-2xl flex justify-between items-center">
+  <div class="bg-black text-white p-8 rounded-3xl mb-6 flex justify-between items-center">
 
     <div>
 
@@ -52,7 +48,7 @@ if (!loggedDealer || !loggedDealer.name) {
 
       </h1>
 
-      <p class="mt-2 text-gray-300">
+      <p class="mt-2">
 
         Welcome:
         <span id="dealerName"></span>
@@ -84,23 +80,11 @@ if (!loggedDealer || !loggedDealer.name) {
 
         <div>
 
-          <div class="flex justify-between items-center">
+          <label class="font-semibold">
 
-            <label class="font-semibold">
+            Team Name
 
-              Team Name
-
-            </label>
-
-            <button type="button"
-                    id="changeTeamBtn"
-                    class="text-blue-500 text-sm hidden">
-
-              Change Team
-
-            </button>
-
-          </div>
+          </label>
 
           <input type="text"
                  id="teamName"
@@ -132,7 +116,7 @@ if (!loggedDealer || !loggedDealer.name) {
 
           <label class="font-semibold">
 
-            Player Jersey Size
+            Jersey Size
 
           </label>
 
@@ -141,7 +125,7 @@ if (!loggedDealer || !loggedDealer.name) {
                   class="w-full border rounded-xl p-3 mt-2">
 
             <option value="">
-              -- Select Jersey Size --
+              Select Size
             </option>
 
             <option>20</option>
@@ -185,7 +169,7 @@ if (!loggedDealer || !loggedDealer.name) {
                   class="w-full border rounded-xl p-3 mt-2">
 
             <option value="">
-              -- Select Jersey Type --
+              Select Type
             </option>
 
             <option>Half Sleeve</option>
@@ -232,7 +216,7 @@ if (!loggedDealer || !loggedDealer.name) {
         <!-- BUTTON -->
 
         <button type="submit"
-                class="w-full bg-black text-white py-4 rounded-2xl font-bold text-lg">
+                class="w-full bg-black text-white py-4 rounded-2xl font-bold">
 
           Add Player
 
@@ -257,31 +241,31 @@ if (!loggedDealer || !loggedDealer.name) {
         <button id="downloadPDF"
                 class="bg-red-500 text-white px-5 py-2 rounded-xl hidden">
 
-          Download PDF
+          PDF
 
         </button>
 
       </div>
 
-      <div id="orderPreview">
+      <div id="preview">
 
-        <p>No Players Added Yet</p>
+        No Players Added
 
       </div>
 
-      <div class="flex gap-3 mt-6">
+      <div class="flex gap-3 mt-5">
 
-        <button id="saveTeamBtn"
+        <button id="saveBtn"
                 class="bg-green-500 text-white px-5 py-3 rounded-xl hidden">
 
           Save Team
 
         </button>
 
-        <button id="clearTeamBtn"
+        <button id="clearBtn"
                 class="bg-gray-700 text-white px-5 py-3 rounded-xl hidden">
 
-          Clear Team
+          Clear
 
         </button>
 
@@ -304,104 +288,71 @@ document.getElementById("dealerName")
 
 // LOGOUT
 
-const logoutBtn = document.getElementById("logoutBtn");
+document.getElementById("logoutBtn")
 
-if (logoutBtn) {
+.addEventListener("click", function() {
 
-  logoutBtn.addEventListener("click", function() {
+  localStorage.removeItem("loggedDealer");
 
-    localStorage.removeItem("loggedDealer");
+  window.location.href = "index.html";
 
-    window.location.href = "index.html";
-
-  });
-
-}
+});
 
 
-// GOOGLE SHEET URL
+// GOOGLE SCRIPT URL
 
 const scriptURL = "https://script.google.com/macros/s/AKfycbzsK4HlGf-1SmHjaVs_N8Sx6yJgRQ4f69HLD5al_Q0-MKLY6BY_qx3beqTwET5P94DP5g/exec";
 
 
-// ELEMENTS
+// STORAGE
+
+let orders = [];
+
+
+// FORM
 
 const form = document.getElementById("jerseyForm");
 
-const preview = document.getElementById("orderPreview");
+const preview = document.getElementById("preview");
 
-const saveTeamBtn = document.getElementById("saveTeamBtn");
+const saveBtn = document.getElementById("saveBtn");
 
-const clearTeamBtn = document.getElementById("clearTeamBtn");
+const clearBtn = document.getElementById("clearBtn");
 
-const downloadPDFBtn = document.getElementById("downloadPDF");
-
-const teamNameInput = document.getElementById("teamName");
-
-const changeTeamBtn = document.getElementById("changeTeamBtn");
+const pdfBtn = document.getElementById("downloadPDF");
 
 
-// STORAGE
-
-const storageKey = "teamOrders_" + loggedDealer.mobile;
-
-let orders = JSON.parse(
-
-  localStorage.getItem(storageKey)
-
-) || [];
-
-
-// LOAD SAVED TEAM
-
-if (orders.length > 0) {
-
-  renderTable();
-
-  teamNameInput.value = orders[0].teamName;
-
-  teamNameInput.readOnly = true;
-
-  teamNameInput.classList.add("bg-gray-100");
-
-  changeTeamBtn.classList.remove("hidden");
-
-}
-
-
-// FORM SUBMIT
+// ADD PLAYER
 
 form.addEventListener("submit", function(e) {
 
   e.preventDefault();
 
-  if (teamNameInput.value.trim() !== "") {
-
-    teamNameInput.readOnly = true;
-
-    teamNameInput.classList.add("bg-gray-100");
-
-    changeTeamBtn.classList.remove("hidden");
-
-  }
-
   const order = {
 
-    dealerName: loggedDealer.name,
+    teamName:
 
-    dealerMobile: loggedDealer.mobile,
+      document.getElementById("teamName").value,
 
-    teamName: document.getElementById("teamName").value,
+    jerseyName:
 
-    jerseyName: document.getElementById("jerseyName").value,
+      document.getElementById("jerseyName").value,
 
-    jerseySize: document.getElementById("jerseySize").value,
+    jerseySize:
 
-    jerseyType: document.getElementById("jerseyType").value,
+      document.getElementById("jerseySize").value,
 
-    jerseyNumber: document.getElementById("jerseyNumber").value,
+    jerseyType:
 
-    notes: document.getElementById("notes").value
+      document.getElementById("jerseyType").value,
+
+    jerseyNumber:
+
+      document.getElementById("jerseyNumber").value,
+
+    notes:
+
+      document.getElementById("notes").value
 
   };
 
@@ -409,36 +360,18 @@ form.addEventListener("submit", function(e) {
 
   renderTable();
 
-  // RESET
-
-  document.getElementById("jerseyName").value = "";
-
-  document.getElementById("jerseySize").value = "";
-
-  document.getElementById("jerseyType").value = "";
-
-  document.getElementById("jerseyNumber").value = "";
-
-  document.getElementById("notes").value = "";
+  form.reset();
 
 });
 
 
-// RENDER TABLE
+// TABLE
 
 function renderTable() {
 
-  if (orders.length === 0) {
-
-    preview.innerHTML = "<p>No Players Added Yet</p>";
-
-    return;
-
-  }
-
   let html = `
 
-  <table class="w-full border-collapse border">
+  <table class="w-full border">
 
     <thead>
 
@@ -446,15 +379,13 @@ function renderTable() {
 
         <th class="border p-2">SR</th>
 
-        <th class="border p-2">Player</th>
+        <th class="border p-2">PLAYER</th>
 
-        <th class="border p-2">Size</th>
+        <th class="border p-2">SIZE</th>
 
-        <th class="border p-2">Type</th>
+        <th class="border p-2">TYPE</th>
 
-        <th class="border p-2">Jersey Number</th>
-
-        <th class="border p-2">Actions</th>
+        <th class="border p-2">NUMBER</th>
 
       </tr>
 
@@ -468,37 +399,19 @@ function renderTable() {
 
     html += `
 
-      <tr>
+    <tr>
 
-        <td class="border p-2">${index + 1}</td>
+      <td class="border p-2">${index + 1}</td>
 
-        <td class="border p-2">${order.jerseyName}</td>
+      <td class="border p-2">${order.jerseyName}</td>
 
-        <td class="border p-2">${order.jerseySize}</td>
+      <td class="border p-2">${order.jerseySize}</td>
 
-        <td class="border p-2">${order.jerseyType}</td>
+      <td class="border p-2">${order.jerseyType}</td>
 
-        <td class="border p-2">${order.jerseyNumber}</td>
+      <td class="border p-2">${order.jerseyNumber}</td>
 
-        <td class="border p-2 flex gap-2">
-
-          <button onclick="editOrder(${index})"
-                  class="bg-blue-500 text-white px-3 py-1 rounded">
-
-            Edit
-
-          </button>
-
-          <button onclick="deleteOrder(${index})"
-                  class="bg-red-500 text-white px-3 py-1 rounded">
-
-            Delete
-
-          </button>
-
-        </td>
-
-      </tr>
+    </tr>
 
     `;
 
@@ -508,60 +421,18 @@ function renderTable() {
 
   preview.innerHTML = html;
 
-  saveTeamBtn.classList.remove("hidden");
+  saveBtn.classList.remove("hidden");
 
-  clearTeamBtn.classList.remove("hidden");
+  clearBtn.classList.remove("hidden");
 
-  downloadPDFBtn.classList.remove("hidden");
-
-}
-
-
-// EDIT
-
-function editOrder(index) {
-
-  const order = orders[index];
-
-  document.getElementById("jerseyName").value = order.jerseyName;
-
-  document.getElementById("jerseySize").value = order.jerseySize;
-
-  document.getElementById("jerseyType").value = order.jerseyType;
-
-  document.getElementById("jerseyNumber").value = order.jerseyNumber;
-
-  document.getElementById("notes").value = order.notes;
-
-  orders.splice(index, 1);
-
-  renderTable();
-
-}
-
-
-// DELETE
-
-function deleteOrder(index) {
-
-  orders.splice(index, 1);
-
-  renderTable();
+  pdfBtn.classList.remove("hidden");
 
 }
 
 
 // SAVE TEAM
 
-saveTeamBtn.addEventListener("click", async function() {
-
-  localStorage.setItem(
-
-    storageKey,
-
-    JSON.stringify(orders)
-
-  );
+saveBtn.addEventListener("click", async function() {
 
   try {
 
@@ -583,7 +454,7 @@ saveTeamBtn.addEventListener("click", async function() {
 
     });
 
-    alert("Team Saved Successfully!");
+    alert("Updated Successfully");
 
   }
 
@@ -591,56 +462,31 @@ saveTeamBtn.addEventListener("click", async function() {
 
     console.error(error);
 
-    alert("Error Saving Team");
-
   }
 
 });
 
 
-// CLEAR TEAM
+// CLEAR
 
-clearTeamBtn.addEventListener("click", function() {
+clearBtn.addEventListener("click", function() {
 
-  if(confirm("Clear Team?")) {
+  orders = [];
 
-    orders = [];
+  preview.innerHTML = "No Players Added";
 
-    localStorage.removeItem(storageKey);
+  saveBtn.classList.add("hidden");
 
-    renderTable();
+  clearBtn.classList.add("hidden");
 
-    teamNameInput.value = "";
-
-    teamNameInput.readOnly = false;
-
-    teamNameInput.classList.remove("bg-gray-100");
-
-    changeTeamBtn.classList.add("hidden");
-
-  }
-
-});
-
-
-// CHANGE TEAM
-
-changeTeamBtn.addEventListener("click", function() {
-
-  if(confirm("Change Team Name?")) {
-
-    teamNameInput.readOnly = false;
-
-    teamNameInput.classList.remove("bg-gray-100");
-
-  }
+  pdfBtn.classList.add("hidden");
 
 });
 
 
 // PDF
 
-downloadPDFBtn.addEventListener("click", function() {
+pdfBtn.addEventListener("click", function() {
 
   const { jsPDF } = window.jspdf;
 
@@ -648,49 +494,73 @@ downloadPDFBtn.addEventListener("click", function() {
 
   const now = new Date();
 
-  const currentDate = now.toLocaleDateString();
-
-  const currentTime = now.toLocaleTimeString();
-
-  doc.setFontSize(24);
+  doc.setFontSize(22);
 
   doc.text("TEAM ORDER DETAILS", 20, 20);
 
-  doc.setFontSize(11);
-
-  doc.text(`Date: ${currentDate}`, 20, 35);
-
-  doc.text(`Time: ${currentTime}`, 80, 35);
-
   doc.setFontSize(12);
 
-  doc.text(`Dealer Name: ${loggedDealer.name}`, 20, 50);
+  doc.text(
 
-  doc.text(`Mobile Number: ${loggedDealer.mobile}`, 20, 60);
+    "Dealer: " + loggedDealer.name,
 
-  doc.text(`Team Name: ${orders[0]?.teamName || ""}`, 20, 70);
+    20,
 
-  let startY = 90;
+    35
 
-  doc.setFillColor(0,0,0);
+  );
 
-  doc.setTextColor(255,255,255);
+  doc.text(
 
-  doc.rect(20, startY, 170, 10, "F");
+    "Mobile: " + loggedDealer.mobile,
 
-  doc.text("SR", 25, startY + 7);
+    20,
 
-  doc.text("PLAYER", 40, startY + 7);
+    45
 
-  doc.text("SIZE", 90, startY + 7);
+  );
 
-  doc.text("TYPE", 115, startY + 7);
+  doc.text(
 
-  doc.text("NUMBER", 145, startY + 7);
+    "Team: " + orders[0].teamName,
 
-  doc.setTextColor(0,0,0);
+    20,
 
-  let y = startY + 10;
+    55
+
+  );
+
+  doc.text(
+
+    "Generated: " +
+
+    now.toLocaleDateString() +
+
+    " " +
+
+    now.toLocaleTimeString(),
+
+    20,
+
+    65
+
+  );
+
+  let y = 85;
+
+  doc.rect(20, y, 170, 10);
+
+  doc.text("SR", 25, y + 7);
+
+  doc.text("PLAYER", 45, y + 7);
+
+  doc.text("SIZE", 90, y + 7);
+
+  doc.text("TYPE", 120, y + 7);
+
+  doc.text("NUMBER", 160, y + 7);
+
+  y += 10;
 
   orders.forEach((order, index) => {
 
@@ -698,13 +568,13 @@ downloadPDFBtn.addEventListener("click", function() {
 
     doc.text(String(index + 1), 25, y + 7);
 
-    doc.text(order.jerseyName, 40, y + 7);
+    doc.text(order.jerseyName, 45, y + 7);
 
     doc.text(order.jerseySize, 90, y + 7);
 
-    doc.text(order.jerseyType, 115, y + 7);
+    doc.text(order.jerseyType, 120, y + 7);
 
-    doc.text(order.jerseyNumber, 150, y + 7);
+    doc.text(order.jerseyNumber, 160, y + 7);
 
     y += 10;
 
@@ -712,9 +582,15 @@ downloadPDFBtn.addEventListener("click", function() {
 
   y += 20;
 
-  doc.setFontSize(11);
+  doc.text(
 
-  doc.text("Generated by Sports Jersey Design", 20, y);
+    "Generated by Sports Jersey Design",
+
+    20,
+
+    y
+
+  );
 
   doc.save("team-order-details.pdf");
 
