@@ -3,12 +3,12 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0" />
+        content="width=device-width, initial-scale=1.0">
 
-  <title>Team Order Dashboard</title>
+  <title>TEAM ORDER DETAILS</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -63,13 +63,15 @@
 
 </div>
 
-<!-- MAIN -->
+<!-- MAIN SECTION -->
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
   <!-- FORM -->
 
   <div class="bg-white rounded-3xl p-8 shadow-lg">
+
+    <!-- TEAM NAME -->
 
     <div class="mb-5">
 
@@ -81,9 +83,11 @@
 
       <input type="text"
              id="teamName"
-             class="w-full border rounded-2xl p-4 mt-2 text-lg" />
+             class="w-full border rounded-2xl p-4 mt-2 text-lg">
 
     </div>
+
+    <!-- PLAYER NAME -->
 
     <div class="mb-5">
 
@@ -95,9 +99,11 @@
 
       <input type="text"
              id="playerName"
-             class="w-full border rounded-2xl p-4 mt-2 text-lg" />
+             class="w-full border rounded-2xl p-4 mt-2 text-lg">
 
     </div>
+
+    <!-- SIZE -->
 
     <div class="mb-5">
 
@@ -132,11 +138,12 @@
         <option>46</option>
         <option>48</option>
         <option>50</option>
-        <option>52</option>
 
       </select>
 
     </div>
+
+    <!-- TYPE -->
 
     <div class="mb-5">
 
@@ -163,6 +170,8 @@
 
     </div>
 
+    <!-- NUMBER -->
+
     <div class="mb-5">
 
       <label class="font-bold text-xl">
@@ -173,9 +182,11 @@
 
       <input type="text"
              id="jerseyNumber"
-             class="w-full border rounded-2xl p-4 mt-2 text-lg" />
+             class="w-full border rounded-2xl p-4 mt-2 text-lg">
 
     </div>
+
+    <!-- NOTES -->
 
     <div class="mb-5">
 
@@ -190,6 +201,8 @@
                 class="w-full border rounded-2xl p-4 mt-2 text-lg"></textarea>
 
     </div>
+
+    <!-- BUTTON -->
 
     <button id="addPlayerBtn"
             class="w-full bg-black text-white p-5 rounded-2xl text-xl font-bold">
@@ -221,6 +234,8 @@
 
     </div>
 
+    <!-- TABLE -->
+
     <div class="overflow-auto">
 
       <table class="w-full border">
@@ -229,17 +244,12 @@
 
           <tr class="bg-black text-white">
 
-            <th class="p-3 border">SR</th>
-
-            <th class="p-3 border">PLAYER</th>
-
-            <th class="p-3 border">SIZE</th>
-
-            <th class="p-3 border">TYPE</th>
-
-            <th class="p-3 border">NUMBER</th>
-
-            <th class="p-3 border">ACTION</th>
+            <th class="border p-3">SR</th>
+            <th class="border p-3">PLAYER</th>
+            <th class="border p-3">SIZE</th>
+            <th class="border p-3">TYPE</th>
+            <th class="border p-3">NUMBER</th>
+            <th class="border p-3">ACTION</th>
 
           </tr>
 
@@ -250,6 +260,8 @@
       </table>
 
     </div>
+
+    <!-- ACTION BUTTONS -->
 
     <div class="mt-6 flex gap-4">
 
@@ -275,7 +287,7 @@
 
 <script>
 
-  // GOOGLE SCRIPT URL
+  // GOOGLE APPS SCRIPT URL
 
   const scriptURL =
     "https://script.google.com/macros/s/AKfycbzoOLyybFoSR-BonHEH_7FxSKkyPwMGqle1Qzlx771iZ6Fxnc4DdKp4yrGoOcJVGalH0g/exec";
@@ -298,75 +310,77 @@
 
   document.getElementById("addPlayerBtn")
 
-    .addEventListener("click", function () {
+  .addEventListener("click", function () {
 
-      const teamName =
-        document.getElementById("teamName").value;
+    const teamName =
+      document.getElementById("teamName").value;
 
-      const playerName =
-        document.getElementById("playerName").value;
+    const playerName =
+      document.getElementById("playerName").value;
 
-      const jerseySize =
-        document.getElementById("jerseySize").value;
+    const jerseySize =
+      document.getElementById("jerseySize").value;
 
-      const jerseyType =
-        document.getElementById("jerseyType").value;
+    const jerseyType =
+      document.getElementById("jerseyType").value;
 
-      const jerseyNumber =
-        document.getElementById("jerseyNumber").value;
+    const jerseyNumber =
+      document.getElementById("jerseyNumber").value;
 
-      const notes =
-        document.getElementById("notes").value;
+    const notes =
+      document.getElementById("notes").value;
 
-      // VALIDATION
+    // VALIDATION
 
-      if (
+    if (
 
-        !teamName ||
-        !playerName ||
-        !jerseySize ||
-        !jerseyType ||
-        !jerseyNumber
+      !teamName ||
+      !playerName ||
+      !jerseySize ||
+      !jerseyType ||
+      !jerseyNumber
 
-      ) {
+    ) {
 
-        alert("Please Fill All Fields");
+      alert("Please Fill All Fields");
 
-        return;
+      return;
 
-      }
+    }
 
-      // PUSH DATA
+    // PUSH DATA
 
-      orders.push({
+    orders.push({
 
-        jerseyName: playerName,
+      jerseyName: playerName,
 
-        jerseySize,
+      jerseySize,
 
-        jerseyType,
+      jerseyType,
 
-        jerseyNumber,
+      jerseyNumber,
 
-        notes
-
-      });
-
-      renderTable();
-
-      // RESET PLAYER FIELDS ONLY
-
-      document.getElementById("playerName").value = "";
-
-      document.getElementById("jerseySize").value = "";
-
-      document.getElementById("jerseyType").value = "";
-
-      document.getElementById("jerseyNumber").value = "";
-
-      document.getElementById("notes").value = "";
+      notes
 
     });
+
+    // RENDER TABLE
+
+    renderTable();
+
+    // RESET PLAYER FIELDS ONLY
+
+    document.getElementById("playerName").value = "";
+
+    document.getElementById("jerseySize").value = "";
+
+    document.getElementById("jerseyType").value = "";
+
+    document.getElementById("jerseyNumber").value = "";
+
+    document.getElementById("notes").value = "";
+
+  });
 
   // RENDER TABLE
 
@@ -444,267 +458,171 @@
 
   document.getElementById("saveBtn")
 
-    .addEventListener("click", async function () {
+  .addEventListener("click", async function () {
 
-      if (orders.length === 0) {
+    if (orders.length === 0) {
 
-        alert("No Players Added");
+      alert("No Players Added");
 
-        return;
+      return;
 
-      }
+    }
 
-      const finalData = {
+    const finalData = {
 
-        dealerName: loggedDealer.name,
+      dealerName: loggedDealer.name,
 
-        dealerMobile: loggedDealer.mobile,
+      dealerMobile: loggedDealer.mobile,
 
-        teamName:
-          document.getElementById("teamName").value,
+      teamName:
+        document.getElementById("teamName").value,
 
-        players: orders
+      players: orders
 
-      };
+    };
 
-      try {
+    console.log(finalData);
 
-        const response = await fetch(scriptURL, {
+    try {
 
-          method: "POST",
+      await fetch(scriptURL, {
 
-          body: JSON.stringify(finalData),
+        method: "POST",
 
-          headers: {
+        body: JSON.stringify(finalData),
 
-            "Content-Type":
-              "application/json"
+        headers: {
 
-          }
-
-        });
-
-        const result =
-          await response.json();
-
-        if (result.status === "success") {
-
-          alert("Team Saved Successfully");
+          "Content-Type":
+            "application/json"
 
         }
 
-        else {
+      });
 
-          alert("Save Failed");
+      alert("Team Saved Successfully");
 
-        }
+    }
 
-      }
+    catch (error) {
 
-      catch (error) {
+      console.log(error);
 
-        console.log(error);
+      alert("Save Failed");
 
-        alert("Save Failed");
+    }
 
-      }
-
-    });
+  });
 
   // CLEAR
 
   document.getElementById("clearBtn")
 
-    .addEventListener("click", function () {
+  .addEventListener("click", function () {
 
-      orders = [];
+    orders = [];
 
-      renderTable();
+    renderTable();
 
-      document.getElementById("teamName").value = "";
+    document.getElementById("teamName").value = "";
 
-    });
+  });
 
   // LOGOUT
 
   document.getElementById("logoutBtn")
 
-    .addEventListener("click", function () {
+  .addEventListener("click", function () {
 
-      localStorage.removeItem("loggedDealer");
+    localStorage.removeItem("loggedDealer");
 
-      window.location.href = "index.html";
+    window.location.href = "index.html";
 
-    });
+  });
 
   // PDF
 
   document.getElementById("pdfBtn")
 
-    .addEventListener("click", function () {
+  .addEventListener("click", function () {
 
-      const { jsPDF } = window.jspdf;
+    const { jsPDF } = window.jspdf;
 
-      const doc = new jsPDF();
+    const doc = new jsPDF();
 
-      const teamName =
-        document.getElementById("teamName").value;
+    const teamName =
+      document.getElementById("teamName").value;
 
-      const date =
-        new Date().toLocaleString();
+    const currentDate =
+      new Date().toLocaleString();
 
-      doc.setFontSize(22);
+    doc.setFontSize(22);
 
-      doc.text("TEAM ORDER DETAILS", 20, 20);
+    doc.text("TEAM ORDER DETAILS", 20, 20);
 
-      doc.setFontSize(12);
+    doc.setFontSize(12);
 
-      doc.text(
+    doc.text(
 
-        "Generated by Sports Jersey Design",
+      "Generated by Sports Jersey Design",
 
-        20,
+      20,
 
-        30
+      30
 
-      );
+    );
 
-      doc.text(
+    doc.text(
 
-        "Date & Time: " + date,
+      "Date & Time: " + currentDate,
 
-        20,
+      20,
 
-        40
+      40
 
-      );
+    );
 
-      doc.text(
+    doc.text(
 
-        "Team Name: " + teamName,
+      "Team Name: " + teamName,
 
-        20,
+      20,
 
-        50
+      50
 
-      );
+    );
 
-      let y = 70;
+    let y = 70;
 
-      doc.text(
+    doc.text("SR", 20, y);
+    doc.text("PLAYER", 40, y);
+    doc.text("SIZE", 90, y);
+    doc.text("TYPE", 120, y);
+    doc.text("NUMBER", 170, y);
 
-        "SR",
+    y += 10;
 
-        20,
+    orders.forEach((player, index) => {
 
-        y
+      doc.text(String(index + 1), 20, y);
 
-      );
+      doc.text(player.jerseyName, 40, y);
 
-      doc.text(
+      doc.text(player.jerseySize, 90, y);
 
-        "PLAYER",
+      doc.text(player.jerseyType, 120, y);
 
-        40,
-
-        y
-
-      );
-
-      doc.text(
-
-        "SIZE",
-
-        90,
-
-        y
-
-      );
-
-      doc.text(
-
-        "TYPE",
-
-        120,
-
-        y
-
-      );
-
-      doc.text(
-
-        "NUMBER",
-
-        170,
-
-        y
-
-      );
+      doc.text(player.jerseyNumber, 170, y);
 
       y += 10;
 
-      orders.forEach((player, index) => {
-
-        doc.text(
-
-          String(index + 1),
-
-          20,
-
-          y
-
-        );
-
-        doc.text(
-
-          player.jerseyName,
-
-          40,
-
-          y
-
-        );
-
-        doc.text(
-
-          player.jerseySize,
-
-          90,
-
-          y
-
-        );
-
-        doc.text(
-
-          player.jerseyType,
-
-          120,
-
-          y
-
-        );
-
-        doc.text(
-
-          player.jerseyNumber,
-
-          170,
-
-          y
-
-        );
-
-        y += 10;
-
-      });
-
-      doc.save("team-order.pdf");
-
     });
+
+    doc.save("team-order.pdf");
+
+  });
 
 </script>
 
 </body>
-
 </html>
