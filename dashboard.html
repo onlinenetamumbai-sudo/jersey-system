@@ -8,7 +8,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <title>Jersey CRM</title>
+  <title>TEAM ORDER DETAILS</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -19,6 +19,8 @@
 <body class="bg-gray-100 min-h-screen p-4">
 
 <script>
+
+// LOGIN CHECK
 
 const loggedDealer = JSON.parse(
 
@@ -58,7 +60,7 @@ if (!loggedDealer) {
     </div>
 
     <button id="logoutBtn"
-            class="bg-red-500 px-5 py-3 rounded-xl font-bold">
+            class="bg-red-500 px-6 py-3 rounded-2xl font-bold">
 
       Logout
 
@@ -66,17 +68,17 @@ if (!loggedDealer) {
 
   </div>
 
-  <!-- GRID -->
+  <!-- MAIN GRID -->
 
   <div class="grid md:grid-cols-2 gap-6">
 
-    <!-- FORM -->
+    <!-- LEFT FORM -->
 
     <div class="bg-white p-6 rounded-3xl shadow-xl">
 
       <form id="jerseyForm" class="space-y-5">
 
-        <!-- TEAM -->
+        <!-- TEAM NAME -->
 
         <div>
 
@@ -93,7 +95,7 @@ if (!loggedDealer) {
 
         </div>
 
-        <!-- PLAYER -->
+        <!-- PLAYER NAME -->
 
         <div>
 
@@ -226,7 +228,7 @@ if (!loggedDealer) {
 
     </div>
 
-    <!-- PREVIEW -->
+    <!-- RIGHT PREVIEW -->
 
     <div class="bg-white p-6 rounded-3xl shadow-xl">
 
@@ -301,7 +303,9 @@ document.getElementById("logoutBtn")
 
 // GOOGLE SCRIPT URL
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbzsK4HlGf-1SmHjaVs_N8Sx6yJgRQ4f69HLD5al_Q0-MKLY6BY_qx3beqTwET5P94DP5g/exec";
+const scriptURL =
+
+"https://script.google.com/macros/s/AKfycbzsK4HlGf-1SmHjaVs_N8Sx6yJgRQ4f69HLD5al_Q0-MKLY6BY_qx3beqTwET5P94DP5g/exec";
 
 
 // STORAGE
@@ -309,7 +313,7 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzsK4HlGf-1SmHjaVs_N8
 let orders = [];
 
 
-// FORM
+// ELEMENTS
 
 const form = document.getElementById("jerseyForm");
 
@@ -321,6 +325,10 @@ const clearBtn = document.getElementById("clearBtn");
 
 const pdfBtn = document.getElementById("downloadPDF");
 
+const teamNameInput =
+
+document.getElementById("teamName");
+
 
 // ADD PLAYER
 
@@ -328,11 +336,33 @@ form.addEventListener("submit", function(e) {
 
   e.preventDefault();
 
+  // VALIDATION
+
+  if (
+
+    !teamNameInput.value ||
+
+    !document.getElementById("jerseyName").value ||
+
+    !document.getElementById("jerseySize").value ||
+
+    !document.getElementById("jerseyType").value ||
+
+    !document.getElementById("jerseyNumber").value
+
+  ) {
+
+    alert("Please Fill All Fields");
+
+    return;
+
+  }
+
   const order = {
 
     teamName:
 
-      document.getElementById("teamName").value,
+      teamNameInput.value,
 
     jerseyName:
 
@@ -360,7 +390,17 @@ form.addEventListener("submit", function(e) {
 
   renderTable();
 
-  form.reset();
+  // RESET ONLY PLAYER FIELDS
+
+  document.getElementById("jerseyName").value = "";
+
+  document.getElementById("jerseySize").value = "";
+
+  document.getElementById("jerseyType").value = "";
+
+  document.getElementById("jerseyNumber").value = "";
+
+  document.getElementById("notes").value = "";
 
 });
 
@@ -401,15 +441,35 @@ function renderTable() {
 
     <tr>
 
-      <td class="border p-2">${index + 1}</td>
+      <td class="border p-2">
 
-      <td class="border p-2">${order.jerseyName}</td>
+        ${index + 1}
 
-      <td class="border p-2">${order.jerseySize}</td>
+      </td>
 
-      <td class="border p-2">${order.jerseyType}</td>
+      <td class="border p-2">
 
-      <td class="border p-2">${order.jerseyNumber}</td>
+        ${order.jerseyName}
+
+      </td>
+
+      <td class="border p-2">
+
+        ${order.jerseySize}
+
+      </td>
+
+      <td class="border p-2">
+
+        ${order.jerseyType}
+
+      </td>
+
+      <td class="border p-2">
+
+        ${order.jerseyNumber}
+
+      </td>
 
     </tr>
 
@@ -446,7 +506,9 @@ saveBtn.addEventListener("click", async function() {
 
         dealerMobile: loggedDealer.mobile,
 
-        teamName: orders[0].teamName,
+        teamName:
+
+          document.getElementById("teamName").value,
 
         players: orders
 
@@ -454,13 +516,15 @@ saveBtn.addEventListener("click", async function() {
 
     });
 
-    alert("Updated Successfully");
+    alert("Team Saved Successfully");
 
   }
 
   catch(error) {
 
     console.error(error);
+
+    alert("Error Saving Team");
 
   }
 
@@ -480,6 +544,8 @@ clearBtn.addEventListener("click", function() {
   clearBtn.classList.add("hidden");
 
   pdfBtn.classList.add("hidden");
+
+  teamNameInput.value = "";
 
 });
 
@@ -522,7 +588,9 @@ pdfBtn.addEventListener("click", function() {
 
   doc.text(
 
-    "Team: " + orders[0].teamName,
+    "Team: " +
+
+    document.getElementById("teamName").value,
 
     20,
 
@@ -546,6 +614,8 @@ pdfBtn.addEventListener("click", function() {
 
   );
 
+  // HEADER
+
   let y = 85;
 
   doc.rect(20, y, 170, 10);
@@ -561,6 +631,8 @@ pdfBtn.addEventListener("click", function() {
   doc.text("NUMBER", 160, y + 7);
 
   y += 10;
+
+  // PLAYERS
 
   orders.forEach((order, index) => {
 
